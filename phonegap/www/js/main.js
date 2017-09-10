@@ -24,58 +24,6 @@ function saveAs (fileData,fileName) {
     });
 }
 
-/*
-var ExternalStorageSdcardAccess = function ( _fileHandler, _errorHandler ) {
-
-  var errorHandler = _errorHandler || _defultErrorHandler;
-  var fileHandler = _fileHandler || _defultFileHandler;
-  var root = "file:///";
-
-  return {
-    scanRoot:scanRoot,
-    scanPathList:scanPathList,
-    scanPath:scanPath
-  };
-
-  function scanPath( path ) {
-    window.resolveLocalFileSystemURL(path, _gotFiles, errorHandler );
-  }
-
-  function scanRoot() {
-    scanPath( root );
-  }
-
-  function scanPathList( arrayOfPath ) {
-    arrayOfPath.forEach( function ( p ) {
-      scanPath( p );
-    } );
-  }
-
-  function _gotFiles(entry) {
-    // ? Check whether the entry is a file or a directory
-    if (entry.isFile) {
-      // * Handle file
-      fileHandler( entry );
-    }
-    else {
-      // * Scan directory and add media
-      var dirReader = entry.createReader();
-      dirReader.readEntries( function(entryList) {
-        entryList.forEach( function ( entr ) {
-          _gotFiles( entr );
-        } );
-      }, errorHandler );
-    }
-  }
-
-  function _defultFileHandler(fileEntry){
-    console.log( "FileEntry: " + fileEntry.name + " | " + fileEntry.fullPath );
-  }
-  function _defultErrorHandler(error){
-    console.log( 'File System Error: ' + error.code );
-  }
-};
-*/
 var champs = [
 "Prénom",
 "Nom de famille",
@@ -186,70 +134,41 @@ function fileHandler( fileEntry ) {
     alert( fileEntry.name + " | " + fileEntry.toURL() );
 }
 window.onload=function(){
-
-//  new ExternalStorageSdcardAccess( fileHandler ).scanPath( "file:///storage/sdcard1/music" );
-
-
-
-  //Check localStorage availability
-  if ( ! storageAvailable('localStorage')) {
-  	alert("Navigateur incompatible, merci d'utiliser une version à jour de Mozilla Firefox")
-  }
   if (!window.indexedDB) {
     window.alert("Votre navigateur ne supporte pas une version stable d'IndexedDB. Quelques fonctionnalités ne seront pas disponibles.")
   }
-
   request = window.indexedDB.open("DB_Coupong",1);
   request.onerror = function(event) {
     alert("Pourquoi ne permettez-vous pas à ma web app d'utiliser IndexedDB?!");
   };
   request.onupgradeneeded = function(event) {
     db = event.target.result;
-
-    // Créer un objet de stockage qui contient les informations de nos clients.
-    // Nous allons utiliser "ssn" en tant que clé parce qu'il est garanti d'être
-    // unique - Du moins, c'est ce qu'on en disait au lancement.
     objectStore = db.createObjectStore("coupons", { keyPath: "date" });
-
-    // Créer un index pour rechercher les clients par leur nom. Nous pourrions
-    // avoir des doubles, alors on n'utilise pas d'index unique.
     createDbIndexes(objectStore);
-
-    // Utiliser la transaction oncomplete pour être sûr que la création de l'objet de stockage
-    // est terminée avant d'ajouter des données dedans.
     objectStore.transaction.oncomplete = function(event) {
-      // Stocker les valeurs dans le nouvel objet de stockage.
       var couponsObjectStore = db.transaction("coupons", "readwrite").objectStore("coupons");
-      /*
-      for (var i in customerData) {
-        couponsObjectStore.add(customerData[i]);
-      }
-      */
     }
   };
   request.onsuccess = function(event) {
-    alert("success")
     db = event.target.result;
     db.onerror = function(event) {
-      // Gestion d'erreur générique pour toutes les erreurs de requêtes de cette base
       alert("Database error: " + event.target.errorCode);
     };
-
     var transaction = db.transaction(["coupons"], "readwrite");
     transaction.oncomplete = function(event) {
-      alert("All done!");
+    //  alert("All done!");
     };
-
     transaction.onerror = function(event) {
       // N'oubliez pas de gérer les erreurs !
     };
     objectStore = transaction.objectStore("coupons");
-    //createDbIndexes(objectStore);
   };
 
   var form = document.getElementById("form");
   form.addEventListener("submit", submitForm);
   document.getElementById("download").addEventListener("click", getFullStore,false);
+  document.getElementById("showCouponsList").addEventListener("click", showCouponsList,false);
+  document.getElementById("deleteCoupons").addEventListener("click", deleteCoupons,false);
 
   var menuBut = document.getElementById("menu_but"),
       menu = document.getElementById("menu");
@@ -258,7 +177,6 @@ window.onload=function(){
     menu.classList.toggle("invisible");
     menu.classList.toggle("removeIt");
   },false);
-
 
   document.body.addEventListener("click",function(e){
     if( e.target.hasAttribute( "clickAction" ) ) return false;
@@ -284,10 +202,6 @@ window.onload=function(){
 
     }
   },true);
-
-
-
-
 };
 
 var createDbIndexes = function(obStore){
@@ -313,7 +227,6 @@ var submitForm = function(e){
     if(input.type == "radio" && input.checked == false){
       continue;
     }
-
     ret[input.name] = input.value
     str += input.name + " : " + input.value + " // ";
   }
@@ -326,10 +239,6 @@ var submitForm = function(e){
     // event.target.result == customerData[i].ssn;
     alert("coupon : " + event.target.result + " ajouté avec succès")
   };
-
-  //store(ret);
-
-  //alert(JSON.stringify(ret));
 };
 
 var clearForm = function(){
@@ -343,7 +252,7 @@ var clearForm = function(){
 var clearInput = function(id){
   var el = document.getElementById(id),
       elType = el.getAttribute("type");
-  if( elType == "text"){
+  if( elType == "text" || elType == "tel"){
     el.setAttribute("value", "");
     el.value = "";
   }else if( elType == "retro" ){
@@ -357,8 +266,54 @@ var store = function(ob){
       str = formOutputToString(ob);
   localStorage.setItem(key, str);
 };
-
-var getFullStore = function(){
+var getAllCoupons = function(callback, callback2){
+  var cbk2 = callback2 || false;
+  var objectStore = db.transaction("coupons").objectStore("coupons");
+  COUPONS=[];
+      objectStore.openCursor().onsuccess = function(event) {
+        var cursor = event.target.result;
+        if (cursor) {
+          COUPONS.push(cursor.value);
+          cursor.continue();
+        }  else {
+          var ret = COUPONS;
+          COUPONS = null;
+          callback(ret, cbk2);
+        }
+      };
+};
+var getFullStore = function(callback){
+  var cbk = callback || false;
+  getAllCoupons(couponsToCSV, cbk);
+}
+var couponsToCSV = function(coupons, callback){
+  var cbk = callback || false;
+      _champs = champs,
+      cl = _champs.length,
+      _correspondances = correspondances;
+  STR='';
+  for( var j = 0; j < cl; j++ ){
+    var c = _champs[ j ];
+    STR += '"' + c + '"' + ( j < cl - 1 ? ';' : '\n' );
+  }
+  var l = coupons.length;
+  for(var c = 0; c < l; c++ ){
+    var coupon = coupons[ c ];
+    for( var i = 0; i < cl; i++ ){
+      var c = _champs[ i ];
+      if( _correspondances.hasOwnProperty( c ) ){
+        STR += '"' + coupon[ _correspondances[ c ] ] + '"' + ( i < cl - 1 ? ';' : '\n' );
+      }else{
+        STR += '""' + ( i < cl - 1 ? ';' : '\n' );
+      }
+    }
+  }
+  //alert(STR);
+  var str = '' + STR;
+  STR = null;
+  download(str, cbk);
+}
+var getFullStore3 = function(){
   var objectStore = db.transaction("coupons").objectStore("coupons"),
       _champs = champs,
       cl = _champs.length,
@@ -373,10 +328,7 @@ var getFullStore = function(){
 
   objectStore.openCursor().onsuccess = function(event) {
     var cursor = event.target.result;
-
     if (cursor) {
-      //alert("Name for SSN " + cursor.key + " is " + cursor.value.nom);
-    //  alert(JSON.stringify(cursor.value))
       for( var i = 0; i < cl; i++ ){
         var c = _champs[ i ];
         if( _correspondances.hasOwnProperty( c ) ){
@@ -385,7 +337,6 @@ var getFullStore = function(){
           STR += '""' + ( i < cl - 1 ? ';' : '\n' );
         }
       }
-
       cursor.continue();
     }  else {
     //  alert("No more entries!");
@@ -397,34 +348,74 @@ var getFullStore = function(){
 
   };
 
-}
-var download = function(str){
-  var blob = new Blob([str], {type: "text/plain;charset=utf-8"});
-  var date = new Date();
+};
+var download = function(str, callback){
+  var blob = new Blob([str], {type: "text/plain;charset=utf-8"}),
+      cbk = callback || false,
+      date = new Date();
   saveAs(blob, "coupons_" + date.getFullYear() + "." + ( date.getMonth() + 1 ) + "." + date.getDate() + "_" + date.getHours() + "h" + date.getMinutes() + "m" + date.getSeconds() + ".csv");
-  clearDb();
-}
-var getFullStore2 = function(){
-  var l = localStorage.length,
-      str = '',
-      _champs = champs,
-      cl = _champs.length;
-  for( var j = 0; j < cl; j++ ){
-    var c = _champs[ j ];
-    str += '"' + c + '"' + ( j < cl - 1 ? ';' : '\n' );
-  }
-  for( var i = 0; i < l; i++ ){
-      str += localStorage.getItem( localStorage.key( i ) );
-  }
-  //alert( str );
+  if(cbk) cbk();
 
-  var blob = new Blob([str], {type: "text/plain;charset=utf-8"});
-  var date = new Date();
-  saveAs(blob, "coupons_" + date.getFullYear() + "." + ( date.getMonth() + 1 ) + "." + date.getDate() + "_" + date.getHours() + "h" + date.getMinutes() + "m" + date.getSeconds() + ".csv");
+  //clearDb();
+}
+var showCouponsList = function(){
+  getAllCoupons(couponsToTable);
+};
+var couponsToTable = function(coupons){
+  var l = coupons.length,
+      table= document.createElement("table"),
+      thead = table.appendChild( document.createElement("thead") ),
+      thr = thead.appendChild( document.createElement("tr") ),
+      tbody = table.appendChild( document.createElement("tbody") ),
+      headFields = ["N°","Civilité", "Prénom", "Nom de famille", "Email", "Portable"],
+      hl = headFields.length,
+      _correspondances = correspondances;
+  for( var i = 0; i < hl; i++ ){
+    var th = thr.appendChild( document.createElement("th") ),
+        span = th.appendChild( document.createElement("span") );
+    span.textContent = headFields[ i ];
+  }
+  for( var j = 0; j < l; j++ ){
+    var coupon = coupons[ j ],
+        tr = tbody.appendChild( document.createElement("tr") );
+    for( var k = 0; k < hl; k++ ){
+      var td = tr.appendChild( document.createElement("td") ),
+          tspan = td.appendChild( document.createElement("span") );
+      if( k == 0 ){
+        tspan.textContent = j + 1;
+        continue;
+      }
+      var propName = _correspondances[ headFields[ k ] ];
+      tspan.textContent = coupon.hasOwnProperty( propName ) ? coupon[ propName ] : "";
+    }
+  }
+  var mainCont = document.createElement("div"),
+      centeredCont = mainCont.appendChild( document.createElement("div") )
+      bandTop = centeredCont.appendChild( document.createElement("div") ),
+      closerCont = bandTop.appendChild( document.createElement("div") ),
+      closerSpan = closerCont.appendChild( document.createElement("span") ),
+      bandBottom = centeredCont.appendChild( document.createElement("div") );
+  mainCont.id = "tableContainer";
+  centeredCont.id = "centeredCont";
+  bandTop.id = "bandTop";
+  bandBottom.id = "bandBottom";
+  bandBottom.appendChild( table );
+  closerCont.classList.add( "closerCont" );
+  document.getElementById( "wraper" ).classList.add( "invisible" );
+  document.body.appendChild( mainCont );
+
+  closerCont.addEventListener("click", closeTableContainer, false);
 
 }
+var closeTableContainer = function(e){
+  var mainCont = document.getElementById("tableContainer");
+  mainCont.parentNode.removeChild( mainCont );
+  document.getElementById( "wraper" ).classList.remove( "invisible" );
+}
+var deleteCoupons = function(){
+  getFullStore(clearDb);
+};
 var clearDb = function(){
-  // ouvre une transaction de lecture / écriture  prête pour le nettoyage
   var transaction = db.transaction(["coupons"], "readwrite");
 /*
   // en cas de succès de l'ouverture de la transaction
@@ -436,18 +427,8 @@ var clearDb = function(){
   transaction.onerror = function(event) {
     alert("error")
   };
-
-  // ouvre l'accès au un magasin "toDoList" de la transaction
   var objectStore = transaction.objectStore("coupons");
-
-  // Vide le magasin d'objet
   var objectStoreRequest = objectStore.clear();
-  /*
-  objectStoreRequest.onsuccess = function(event) {
-  // rapporte le succès du nettoyage
-  note.innerHTML += '<li>Enregistrements effacées.</li>';
-  };
-  */
 }
 var formOutputToString = function(ob){
   var _champs = champs,
@@ -463,28 +444,4 @@ var formOutputToString = function(ob){
     }
   }
   return str;
-};
-
-function storageAvailable(type) {
-    try {
-        var storage = window[type],
-            x = '__storage_test__';
-        storage.setItem(x, x);
-        storage.removeItem(x);
-        return true;
-    }
-    catch(e) {
-        return e instanceof DOMException && (
-            // everything except Firefox
-            e.code === 22 ||
-            // Firefox
-            e.code === 1014 ||
-            // test name field too, because code might not be present
-            // everything except Firefox
-            e.name === 'QuotaExceededError' ||
-            // Firefox
-            e.name === 'NS_ERROR_DOM_QUOTA_REACHED') &&
-            // acknowledge QuotaExceededError only if there's something already stored
-            storage.length !== 0;
-    }
 };

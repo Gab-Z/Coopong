@@ -1,11 +1,11 @@
 <?xml version='1.0' encoding='utf-8'?>
-<widget id="com.phonegap.helloworld" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
-    <name>helloworld</name>
+<widget id="com.phonegap.coopong" version="1.0.0" xmlns="http://www.w3.org/ns/widgets" xmlns:gap="http://phonegap.com/ns/1.0">
+    <name>Coopong</name>
     <description>
-        Hello World sample application that responds to the deviceready event.
+        Application Android permettant de saisir des coupons en mode hors-ligne
     </description>
-    <author email="support@phonegap.com" href="http://phonegap.com">
-        PhoneGap Team
+    <author email="gabriel.levassor@afev.org" href="http://afev.org">
+        Afev
     </author>
     <content src="index.html" />
     <preference name="DisallowOverscroll" value="true" />
