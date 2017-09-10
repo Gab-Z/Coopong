@@ -237,6 +237,7 @@ label > div {
   align-items:center;
 }
 #tableContainer #centeredCont{
+  width:100%;
   display : flex;
   flex-flow: column nowrap;
   justify-content:flex-start;
@@ -249,13 +250,20 @@ label > div {
   width:100%;
   display : flex;
   flex-flow: row nowrap;
-  justify-content:flex-end;
+  justify-content:center;
   align-content:center;
   align-items:center;
 }
-#tableContainer #bandBottom table{
-  margin-top: 20px;
+#tableContainer #bandBottom{
+  width:100%;
+  margin-top:15px;
+  display : flex;
+  flex-flow: column nowrap;
+  justify-content:flex-start;
+  align-content:center;
+  align-items:center;
 }
+
 #tableContainer .closerCont{
   width:60px;
   height:60px;
@@ -272,9 +280,26 @@ label > div {
   font-family:"icons";
   content:"r"
 }
-#tableContainer table,
-#tableContainer th,
-#tableContainer td{
-  border-collapse : collapse;
+
+
+.couponBox{
+  width: 80%;
+  display : flex;
+  flex-flow: column nowrap;
+  justify-content:flex-start;
+  align-content:center;
+  align-items:center;
+  margin:5px;
   border: 2px solid white;
+  border-radius : 3px;
+  background-color: rgb(210, 210, 210);
+}
+.couponBox .nameLine,
+.couponBox .dataLine{
+  width: 100%;
+  display : flex;
+  flex-flow: row nowrap;
+  justify-content:flex-start;
+  align-content:center;
+  align-items:center;
 }

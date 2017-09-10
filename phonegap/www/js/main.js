@@ -363,6 +363,38 @@ var showCouponsList = function(){
 };
 var couponsToTable = function(coupons){
   var l = coupons.length,
+      mainCont = document.createElement("div"),
+      centeredCont = mainCont.appendChild( document.createElement("div") )
+      bandTop = centeredCont.appendChild( document.createElement("div") ),
+      closerCont = bandTop.appendChild( document.createElement("div") ),
+      closerSpan = closerCont.appendChild( document.createElement("span") ),
+      bandBottom = centeredCont.appendChild( document.createElement("div") );
+  mainCont.id = "tableContainer";
+  centeredCont.id = "centeredCont";
+  bandTop.id = "bandTop";
+  bandBottom.id = "bandBottom";
+  closerCont.classList.add( "closerCont" );
+
+  for( var j = 0; j < l; j++ ){
+    var coupon = coupons[ j ],
+        box = bandBottom.appendChild( document.createElement("div") ),
+        nameLine = box.appendChild( document.createElement("div") ),
+        nameSpan = nameLine.appendChild( document.createElement("span") ),
+        dataLine = box.appendChild( document.createElement("div") ),
+        dataSpan = dataLine.appendChild( document.createElement("span") );
+      box.classList.add("couponBox");
+      nameLine.classList.add("nameLine");
+      dataLine.classList.add("dataLine");
+      nameSpan.textContent = (j + 1) + " - " + ( coupon.civilite ? coupon.civilite : "") + " " + ( coupon.prenom ? coupon.prenom : "") + " " + ( coupon.nom ? coupon.nom : "");
+      dataSpan.textContent = ( coupon.email ? coupon.email : "Pas d'email") + " // " + ( coupon.portable ? coupon.portable : "Pas de téléphone")
+  }
+  document.getElementById( "wraper" ).classList.add( "invisible" );
+  document.body.appendChild( mainCont );
+  closerCont.addEventListener("click", closeTableContainer, false);
+};
+
+var couponsToTable2 = function(coupons){
+  var l = coupons.length,
       table= document.createElement("table"),
       thead = table.appendChild( document.createElement("thead") ),
       thr = thead.appendChild( document.createElement("tr") ),
