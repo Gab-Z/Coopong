@@ -86,6 +86,7 @@ body{
 }
 #form > * {
   margin-top:15px;
+  width:100%;
 }
 #form #box_civilite label{
   height:45px;
@@ -122,15 +123,33 @@ input[type="radio"] + label .retroCont{
 #form input[type="radio"]:checked + label .retroCont span::after{
     content:"x";
 }
+#form #submitWrapper{
+  display : flex;
+  flex-flow:row nowrap;
+  justify-content:center;
+  align-content:center;
+  align-items:center;
+  width:100%;
+}
 label > div {
   width:30px;
 }
-#box_civilite > .frwscc:last-child{
+#box_civilite > .fcwscc:last-child{
   margin-left:50px;
 }
+#box_civilite > *,
+#form .inputWrapper{
+  width: 100%;
+}
+#form .inputWrapper input{
+  width : 90%;
+}
+#box_civilite .fcwscc{
+  width: 50%
+}
+
 #form input[type="text"],
 #form input[type="tel"]{
-  width:350px;
   height:45px;
   font-size:1.5em;
   font-family:"noto";
@@ -139,7 +158,14 @@ label > div {
   font-size:1.5em;
 }
 
-.frwscc{
+.fcwscc{
+  display : flex;
+  flex-flow:column nowrap;
+  justify-content:flex-start;
+  align-content:flex-start;
+  align-items:flex-start;
+}
+.frnwscc{
   display : flex;
   flex-flow:row nowrap;
   justify-content:flex-start;

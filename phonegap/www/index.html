@@ -28,40 +28,44 @@
   <img id="logo" src="img/logo_afev.png" />
   <img id="bandeau_top" src="img/title.gif"/>
   <form id="form">
-    <div id="box_civilite" class="frwscc">
+    <div id="box_civilite" class="fcwscc">
       <div class="field_name"><span>Civilité: </span></div>
-      <div class="frwscc">
-        <input type="radio" name="civilite" id="Mme" value="Mme" autocomplete="off"/>
-        <label for="Mme"><div class="txtCont"><span>Mme</span></div><div class="retroCont"><span></span></div></label>
-      </div>
-      <div class="frwscc">
-        <input type="radio" name="civilite" id="M." value="M." autocomplete="off"/>
-        <label for="M."><div class="txtCont"><span>M.</span></div><div class="retroCont"><span></span></div></label>
+        <div class="frnwscc">
+          <div class="fcwscc">
+            <input type="radio" name="civilite" id="Mme" value="Mme" autocomplete="off"/>
+            <label for="Mme"><div class="txtCont"><span>Mme</span></div><div class="retroCont"><span></span></div></label>
+          </div>
+          <div class="fcwscc">
+            <input type="radio" name="civilite" id="M." value="M." autocomplete="off"/>
+            <label for="M."><div class="txtCont"><span>M.</span></div><div class="retroCont"><span></span></div></label>
+          </div>
       </div>
     </div>
 
 
-    <label for="prenom" class="frwscc">
+    <label for="prenom" class="fcwscc">
       <div  class="field_name"><span>Prénom: </span></div>
-      <div><input id="prenom" name="prenom" type="text" required="true" autocomplete="off"/></div>
+      <div class="inputWrapper"><input id="prenom" name="prenom" type="text" required="true" autocomplete="off"/></div>
     </label>
 
-    <label for="nom" class="frwscc">
+    <label for="nom" class="fcwscc">
       <div class="field_name"><span>Nom: </span></div>
-      <div><input id="nom" name="nom" type="text" required="true" autocomplete="off"/></div>
+      <div class="inputWrapper"><input id="nom" name="nom" type="text" required="true" autocomplete="off"/></div>
     </label>
 
-    <label for="email" class="frwscc">
+    <label for="email" class="fcwscc">
       <div class="field_name"><span>Email: </span></div>
-      <div><input id="email" name="email" type="text" required="true" autocomplete="off"/></div>
+      <div class="inputWrapper"><input id="email" name="email" type="text" required="true" autocomplete="off"/></div>
     </label>
 
-    <label for="portable" class="frwscc">
+    <label for="portable" class="fcwscc">
       <div class="field_name"><span>Portable: </span></div>
-      <div><input id="portable" name="portable" type="tel" required="true" autocomplete="off"/></div>
+      <div class="inputWrapper"><input id="portable" name="portable" type="tel" required="true" autocomplete="off"/></div>
     </label>
 
-    <input id="submit" type="image" src="img/bouton_envoyer.gif"/>
+    <div id="submitWrapper">
+      <input id="submit" type="image" src="img/bouton_envoyer.gif"/>
+    </div>
 
   </form>
 
