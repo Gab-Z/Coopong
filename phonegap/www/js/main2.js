@@ -173,23 +173,11 @@ window.onload=function(){
   var menuBut = document.getElementById("menu_but"),
       menu = document.getElementById("menu");
   menuBut.addEventListener("click",function(e){
-    var menu = document.getElementById("menu"),
-        menuIsVisible = menu.classList.contains("invisible");
-    if(document.getElementById( "tableContainer" )){
-      closeTableContainer();
-    }else if(! menuIsVisible ){
-      menu.classList.add("invisible");
-      document.getElementById( "wraper" ).classList.remove( "invisible" );
-      e.currentTarget.textContent = "m";
-    } else if( menuIsVisible ){
-      document.getElementById( "wraper" ).classList.add( "invisible" );
-      e.currentTarget.textContent = "l";
-      menu.classList.remove("invisible");
-    }
-
+    var menu = document.getElementById("menu");
+    menu.classList.toggle("invisible");
+    menu.classList.toggle("removeIt");
   },false);
 
-/*
   document.body.addEventListener("click",function(e){
     if( e.target.hasAttribute( "clickAction" ) ) return false;
     var removeList = document.querySelectorAll(".removeIt"),
@@ -214,7 +202,6 @@ window.onload=function(){
 
     }
   },true);
-  */
 };
 
 var createDbIndexes = function(obStore){
@@ -378,15 +365,15 @@ var couponsToTable = function(coupons){
   var l = coupons.length,
       mainCont = document.createElement("div"),
       centeredCont = mainCont.appendChild( document.createElement("div") )
-    //  bandTop = centeredCont.appendChild( document.createElement("div") ),
-    //  closerCont = bandTop.appendChild( document.createElement("div") ),
-    //  closerSpan = closerCont.appendChild( document.createElement("span") ),
+      bandTop = centeredCont.appendChild( document.createElement("div") ),
+      closerCont = bandTop.appendChild( document.createElement("div") ),
+      closerSpan = closerCont.appendChild( document.createElement("span") ),
       bandBottom = centeredCont.appendChild( document.createElement("div") );
   mainCont.id = "tableContainer";
   centeredCont.id = "centeredCont";
-  //bandTop.id = "bandTop";
+  bandTop.id = "bandTop";
   bandBottom.id = "bandBottom";
-//  closerCont.classList.add( "closerCont" );
+  closerCont.classList.add( "closerCont" );
 
   for( var j = 0; j < l; j++ ){
     var coupon = coupons[ j ],
@@ -402,9 +389,8 @@ var couponsToTable = function(coupons){
       dataSpan.textContent = ( coupon.email ? coupon.email : "Pas d'email") + " // " + ( coupon.portable ? coupon.portable : "Pas de téléphone")
   }
   document.getElementById( "wraper" ).classList.add( "invisible" );
-  document.getElementById( "menu" ).classList.add( "invisible" );
-  document.getElementById( "mainBody" ).appendChild( mainCont );
-//  closerCont.addEventListener("click", closeTableContainer, false);
+  document.body.appendChild( mainCont );
+  closerCont.addEventListener("click", closeTableContainer, false);
 };
 
 var couponsToTable2 = function(coupons){
@@ -455,11 +441,8 @@ var couponsToTable2 = function(coupons){
 }
 var closeTableContainer = function(e){
   var mainCont = document.getElementById("tableContainer");
-  if(mainCont){
-    mainCont.parentNode.removeChild( mainCont );
-    document.getElementById( "wraper" ).classList.remove( "invisible" );
-    document.getElementById("menu_but").textContent = "m";
-  }
+  mainCont.parentNode.removeChild( mainCont );
+  document.getElementById( "wraper" ).classList.remove( "invisible" );
 }
 var deleteCoupons = function(){
   getFullStore(clearDb);
