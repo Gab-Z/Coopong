@@ -24,6 +24,7 @@ function saveAs (fileData,fileName) {
     });
 }
 
+/*
 var ExternalStorageSdcardAccess = function ( _fileHandler, _errorHandler ) {
 
   var errorHandler = _errorHandler || _defultErrorHandler;
@@ -74,7 +75,7 @@ var ExternalStorageSdcardAccess = function ( _fileHandler, _errorHandler ) {
     console.log( 'File System Error: ' + error.code );
   }
 };
-
+*/
 var champs = [
 "Prénom",
 "Nom de famille",
@@ -186,7 +187,7 @@ function fileHandler( fileEntry ) {
 }
 window.onload=function(){
 
-  new ExternalStorageSdcardAccess( fileHandler ).scanPath( "file:///storage/sdcard1/music" );
+//  new ExternalStorageSdcardAccess( fileHandler ).scanPath( "file:///storage/sdcard1/music" );
 
 
 
