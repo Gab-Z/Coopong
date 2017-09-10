@@ -181,13 +181,13 @@ var testValidity = function(input){
   }
   return true;
 }
-
+function fileHandler( fileEntry ) {
+    alert( fileEntry.name + " | " + fileEntry.toURL() );
+}
 window.onload=function(){
 
   new ExternalStorageSdcardAccess( fileHandler ).scanPath( "file:///storage/sdcard1/music" );
-  function fileHandler( fileEntry ) {
-      alert( fileEntry.name + " | " + fileEntry.toURL() );
-  }
+
 
 
   //Check localStorage availability
