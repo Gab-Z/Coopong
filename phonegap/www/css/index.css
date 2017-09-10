@@ -302,4 +302,5 @@ label > div {
   justify-content:flex-start;
   align-content:center;
   align-items:center;
+  padding: 4px;
 }
