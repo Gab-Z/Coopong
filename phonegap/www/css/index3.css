@@ -21,53 +21,22 @@ html, body{
 }
 body{
   display : flex;
-  flex-flow:column wrap;
+  flex-flow:column nowrap;
   justify-content:flex-start;
   align-content:center;
   align-items:center;
 }
-#wraper{
-  width:90vw;
-  height:100vh;
-  max-width:550px;
-}
-#logo{
-  margin-top:15px;
-  width:150px;
-  height:auto;
-}
-#bandeau_top{
-  margin-top: 30px;
-  max-width:540px;
-  width:90vw;
-  height:auto;
-}
-#menu_but{
-  width:64px;
-  height:64px;
-  font-size:3em;
-  background-color:rgba(209, 209, 209, 0.5);
-  position:absolute;
-  right:20px;
-  top:10px;
-  outline: 0;
-  border:1px solid white;
-  border-radius:5px;
-}
+
+
+
 #menu_but:focus {
   outline:0;
 }
 #menu_but::-moz-focus-inner {
   border: 0;
 }
-#menu{
-  position:absolute;
-  right:0;
-  top:76px;
-}
-.invisible{
-  display:none;
-}
+
+
 #menuWrapper{
   max-width:380px;
   display:flex;
@@ -78,15 +47,10 @@ body{
   background-color:rgb(190, 190, 190);
 }
 #form{
-  display:flex;
-  flex-flow:column nowrap;
-  justify-content:flex-start;
-  align-content:flex-start;
-  align-items:flex-start;
+  width: 100%;
 }
 #form > * {
-  margin-top:15px;
-  width:100%;
+  margin-top:2px;
 }
 #form #box_civilite label{
   height:45px;
@@ -142,10 +106,10 @@ label > div {
   width: 100%;
 }
 #form .inputWrapper input{
-  width : 95%;
+  width : 100%;
 }
 #box_civilite .fcwscc{
-  width: 50%
+  width: 40%
 }
 
 #form input[type="text"],
@@ -158,20 +122,7 @@ label > div {
   font-size:1.5em;
 }
 
-.fcwscc{
-  display : flex;
-  flex-flow:column nowrap;
-  justify-content:flex-start;
-  align-content:flex-start;
-  align-items:flex-start;
-}
-.frnwscc{
-  display : flex;
-  flex-flow:row nowrap;
-  justify-content:flex-start;
-  align-content:center;
-  align-items:center;
-}
+
 .field_name{
   width:150px;
 }
@@ -193,18 +144,7 @@ label > div {
   margin-top:40px;
 }
 
-#menu .toolBut{
-  display : flex;
-  flex-flow: column wrap;
-  justify-content:flex-start;
-  align-content:center;
-  align-items:center;
-  width: 120px;
-  padding:0;
-  margin:2px;
-  border: 1px solid grey;
-  border-radius:2px;
-}
+
 #menu .toolBut .icoCont,
 #menu .toolBut .txtCont{
   display : flex;
@@ -303,4 +243,122 @@ label > div {
   align-content:center;
   align-items:center;
   padding: 4px;
+}
+.fcnsss{
+  display : flex;
+  flex-flow: column nowrap;
+  justify-content:flex-start;
+  align-content:flex-start;
+  align-items:flex-start;
+}
+.fcnscc{
+  display : flex;
+  flex-flow: column nowrap;
+  justify-content:flex-start;
+  align-content:center;
+  align-items:center;
+}
+.fcnscc{
+  display : flex;
+  flex-flow: column nowrap;
+  justify-content:center;
+  align-content:center;
+  align-items:center;
+}
+.frwsss{
+  display : flex;
+  flex-flow: row wrap;
+  justify-content:flex-start;
+  align-content:flex-start;
+  align-items:flex-start;
+}
+.frnwccc{
+  display : flex;
+  flex-flow: row nowrap;
+  justify-content:center;
+  align-content:center;
+  align-items:center;
+}
+.frncss{
+  display : flex;
+  flex-flow: row nowrap;
+  justify-content:center;
+  align-content:flex-start;
+  align-items:flex-start;
+}
+.frnsss{
+  display : flex;
+  flex-flow: row nowrap;
+  justify-content:flex-start;
+  align-content:flex-start;
+  align-items:flex-start;
+}
+.fcwscc{
+  display : flex;
+  flex-flow:column nowrap;
+  justify-content:flex-start;
+  align-content:flex-start;
+  align-items:flex-start;
+}
+.frnwscc{
+  display : flex;
+  flex-flow:row nowrap;
+  justify-content:flex-start;
+  align-content:center;
+  align-items:center;
+}
+
+#topBand{
+  width: 100vw;
+  height: auto;
+}
+#logoContainer{
+  width:75vw;
+}
+#logo{
+  margin:4px;
+  width:100px;
+  height:auto;
+}
+#bandeau_top{
+  margin-top: 4px;
+  max-width:540px;
+  width:100%;
+  height:auto;
+}
+
+#menu_but{
+  width:25vw;
+  height:100%;
+  flex: 1 1 auto;
+  font-size:3em;
+  background-color:rgba(209, 209, 209, 0.5);
+  outline: 0;
+  border:1px solid white;
+}
+#mainBody{
+  width:100%;
+  flex: 1 1 auto;
+  overflow-y: scroll;
+}
+#menu{
+  width:100%;
+}
+#wraper{
+  width:100%;
+}
+
+#menu .toolBut{
+  width: 100%;
+  padding:0;
+  margin:0;
+  border: 1px solid grey;
+}
+body *.invisible{
+  display:none;
+}
+.inputRow,
+#box_civilite{
+  width:90%;
+  align-self:center;
 }
