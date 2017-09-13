@@ -21,6 +21,7 @@ html, body{
 }
 body{
   display : flex;
+  display: -webkit-flex;
   flex-flow:column nowrap;
   justify-content:flex-start;
   align-content:center;
@@ -37,6 +38,7 @@ body{
 #menuWrapper{
   max-width:380px;
   display:flex;
+  display: -webkit-flex;
   flex-flow:row wrap;
   justify-content:flex-start;
   align-content:flex-start;
@@ -53,6 +55,7 @@ body{
   height:45px;
   width:120px;
   display:flex;
+  display: -webkit-flex;
   flex-flow:row nowrap;
   justify-content:flex-start;
   align-content:center;
@@ -63,6 +66,7 @@ input[type="radio"]{
 }
 input[type="radio"] + label .retroCont{
     display : flex;
+    display: -webkit-flex;
     flex-flow:row nowrap;
     justify-content:center;
     align-content:center;
@@ -86,6 +90,7 @@ input[type="radio"] + label .retroCont{
 }
 #form #submitWrapper{
   display : flex;
+  display: -webkit-flex;
   flex-flow:row nowrap;
   justify-content:center;
   align-content:center;
@@ -127,6 +132,7 @@ label > div {
 .txtCont{
   height:45px;
   display : flex;
+  display: -webkit-flex;
   flex-flow:row wrap;
   justify-content:flex-start;
   align-content:center;
@@ -145,6 +151,7 @@ label > div {
 #menu .toolBut .icoCont,
 #menu .toolBut .txtCont{
   display : flex;
+  display: -webkit-flex;
   flex-flow: column nowrap;
   justify-content:center;
   align-content:center;
@@ -168,6 +175,7 @@ label > div {
   width : 100vw;
   height: 100vh;
   display : flex;
+  display: -webkit-flex;
   flex-flow: column nowrap;
   justify-content:flex-start;
   align-content:center;
@@ -176,6 +184,7 @@ label > div {
 #tableContainer #centeredCont{
   width:100%;
   display : flex;
+  display: -webkit-flex;
   flex-flow: column nowrap;
   justify-content:flex-start;
   align-content:center;
@@ -195,6 +204,7 @@ label > div {
   width:100%;
   margin-top:15px;
   display : flex;
+  display: -webkit-flex;
   flex-flow: column nowrap;
   justify-content:flex-start;
   align-content:center;
@@ -207,6 +217,7 @@ label > div {
   border-radius: 50%;
   background-color:rgb(235, 36, 36);
   display : flex;
+  display: -webkit-flex;
   flex-flow: column nowrap;
   justify-content:center;
   align-content:center;
@@ -222,6 +233,7 @@ label > div {
 .couponBox{
   width: 80%;
   display : flex;
+  display: -webkit-flex;
   flex-flow: column nowrap;
   justify-content:flex-start;
   align-content:center;
@@ -235,6 +247,7 @@ label > div {
 .couponBox .dataLine{
   width: 100%;
   display : flex;
+  display: -webkit-flex;
   flex-flow: row nowrap;
   justify-content:flex-start;
   align-content:center;
@@ -243,6 +256,7 @@ label > div {
 }
 .fcnsss{
   display : flex;
+  display: -webkit-flex;
   flex-flow: column nowrap;
   justify-content:flex-start;
   align-content:flex-start;
@@ -250,6 +264,7 @@ label > div {
 }
 .fcnscc{
   display : flex;
+  display: -webkit-flex;
   flex-flow: column nowrap;
   justify-content:flex-start;
   align-content:center;
@@ -257,6 +272,7 @@ label > div {
 }
 .fcnscc{
   display : flex;
+  display: -webkit-flex;
   flex-flow: column nowrap;
   justify-content:center;
   align-content:center;
@@ -264,6 +280,7 @@ label > div {
 }
 .frwsss{
   display : flex;
+  display: -webkit-flex;
   flex-flow: row wrap;
   justify-content:flex-start;
   align-content:flex-start;
@@ -271,6 +288,7 @@ label > div {
 }
 .frnwccc{
   display : flex;
+  display: -webkit-flex;
   flex-flow: row nowrap;
   justify-content:center;
   align-content:center;
@@ -278,6 +296,7 @@ label > div {
 }
 .frncss{
   display : flex;
+  display: -webkit-flex;
   flex-flow: row nowrap;
   justify-content:center;
   align-content:flex-start;
@@ -285,6 +304,7 @@ label > div {
 }
 .frnsss{
   display : flex;
+  display: -webkit-flex;
   flex-flow: row nowrap;
   justify-content:flex-start;
   align-content:flex-start;
@@ -292,6 +312,7 @@ label > div {
 }
 .fcwscc{
   display : flex;
+  display: -webkit-flex;
   flex-flow:column nowrap;
   justify-content:flex-start;
   align-content:flex-start;
@@ -299,6 +320,7 @@ label > div {
 }
 .frnwscc{
   display : flex;
+  display: -webkit-flex;
   flex-flow:row nowrap;
   justify-content:flex-start;
   align-content:center;
