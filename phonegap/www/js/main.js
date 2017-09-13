@@ -185,22 +185,12 @@ window.onload=function(){
       document.getElementById( "wraper" ).classList.add( "invisible" );
       e.currentTarget.textContent = "l";
       menu.classList.remove("invisible");
-      document.addEventListener('backbutton', backButton, false);
     }
 
   },false);
 
 };
-var backButton = function(e){
-  if(document.getElementById( "tableContainer" )){
-    closeTableContainer();
-  }else if(! menuIsVisible ){
-    menu.classList.add("invisible");
-    document.getElementById( "wraper" ).classList.remove( "invisible" );
-    e.currentTarget.textContent = "m";
-  }
-  document.removeEventListener('backbutton', backButton);
-}
+
 var createDbIndexes = function(obStore){
   obStore.createIndex("civilite", "civilite", { unique: false });
   obStore.createIndex("prenom", "prenom", { unique: false });
