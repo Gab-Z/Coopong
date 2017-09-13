@@ -24,71 +24,85 @@
 </head>
 
 <body>
-  <div id="wraper">
-  <img id="logo" src="img/logo_afev.png" />
-  <img id="bandeau_top" src="img/title.gif"/>
-  <form id="form">
-    <div id="box_civilite" class="fcwscc">
-      <div class="field_name"><span>Civilité: </span></div>
-        <div class="frnwscc">
-          <div class="fcwscc">
-            <input type="radio" name="civilite" id="Mme" value="Mme" autocomplete="off"/>
-            <label for="Mme"><div class="txtCont"><span>Mme</span></div><div class="retroCont"><span></span></div></label>
-          </div>
-          <div class="fcwscc">
-            <input type="radio" name="civilite" id="M." value="M." autocomplete="off"/>
-            <label for="M."><div class="txtCont"><span>M.</span></div><div class="retroCont"><span></span></div></label>
-          </div>
-      </div>
+  <div id="topBand" class="frwsss">
+    <div id="logoContainer" class="fcnsss">
+      <img id="logo" src="img/logo_afev.png"/>
+      <img id="bandeau_top" src="img/title.gif"/>
     </div>
-
-
-    <label for="prenom" class="fcwscc">
-      <div  class="field_name"><span>Prénom: </span></div>
-      <div class="inputWrapper"><input id="prenom" name="prenom" type="text" required="true" autocomplete="off"/></div>
-    </label>
-
-    <label for="nom" class="fcwscc">
-      <div class="field_name"><span>Nom: </span></div>
-      <div class="inputWrapper"><input id="nom" name="nom" type="text" required="true" autocomplete="off"/></div>
-    </label>
-
-    <label for="email" class="fcwscc">
-      <div class="field_name"><span>Email: </span></div>
-      <div class="inputWrapper"><input id="email" name="email" type="text" required="true" autocomplete="off"/></div>
-    </label>
-
-    <label for="portable" class="fcwscc">
-      <div class="field_name"><span>Portable: </span></div>
-      <div class="inputWrapper"><input id="portable" name="portable" type="tel" required="true" autocomplete="off"/></div>
-    </label>
-
-    <div id="submitWrapper">
-      <input id="submit" type="image" src="img/bouton_envoyer.gif"/>
-    </div>
-
-  </form>
-
-
-</div>
-
-<button id="menu_but" clickAction="true" class="icon">m</button>
-<div id="menu" class="invisible" fakeParent="menu_but">
-  <div id="menuWrapper">
-    <button id="download" class="toolBut">
-      <div class="icoCont"><span>b</span></div>
-      <div class="txtCont"><span>Enregistrer les coupons au format CSV</span></div>
-    </button>
-    <button id="showCouponsList" class="toolBut">
-      <div class="icoCont"><span>a</span></div>
-      <div class="txtCont"><span>Afficher les coupons</span></div>
-    </button>
-    <button id="deleteCoupons" class="toolBut">
-      <div class="icoCont"><span>w</span></div>
-      <div class="txtCont"><span>Supprimer les coupons, vider la mémoire</span></div>
-    </button>
+    <button id="menu_but" clickAction="true" class="icon">m</button>
   </div>
-</div>
+  <div id="mainBody" class="fcnsss">
+    <div id="wraper" class="fcnsss">
+
+      <form id="form" class="fcnsss">
+        <div id="box_civilite" class="fcwscc">
+          <div class="field_name"><span>Civilité: </span></div>
+            <div class="frnwccc">
+              <div class="fcwscc">
+                <input type="radio" name="civilite" id="Mme" value="Mme" autocomplete="off"/>
+                <label for="Mme"><div class="txtCont"><span>Mme</span></div><div class="retroCont"><span></span></div></label>
+              </div>
+              <div class="fcwscc">
+                <input type="radio" name="civilite" id="M." value="M." autocomplete="off"/>
+                <label for="M."><div class="txtCont"><span>M.</span></div><div class="retroCont"><span></span></div></label>
+              </div>
+          </div>
+        </div>
+
+        <label for="prenom" class="inputRow fcwscc">
+          <div  class="field_name"><span>Prénom: </span></div>
+          <div class="inputWrapper"><input id="prenom" name="prenom" type="text" required="true" autocomplete="off"/></div>
+        </label>
+
+        <label for="nom" class="inputRow fcwscc">
+          <div class="field_name"><span>Nom: </span></div>
+          <div class="inputWrapper"><input id="nom" name="nom" type="text" required="true" autocomplete="off"/></div>
+        </label>
+
+        <label for="email" class="inputRow fcwscc">
+          <div class="field_name"><span>Email: </span></div>
+          <div class="inputWrapper"><input id="email" name="email" type="text" required="true" autocomplete="off"/></div>
+        </label>
+
+        <label for="portable" class="inputRow fcwscc">
+          <div class="field_name"><span>Portable: </span></div>
+          <div class="inputWrapper"><input id="portable" name="portable" type="tel" required="true" autocomplete="off"/></div>
+        </label>
+
+        <div id="submitWrapper">
+          <input id="submit" type="image" src="img/bouton_envoyer.gif"/>
+        </div>
+
+      </form>
+    </div>
+
+    <div id="menu" class="invisible fcnsss" fakeParent="menu_but">
+      <button id="download" class="toolBut frnsss">
+        <div class="icoCont"><span>b</span></div>
+        <div class="txtCont"><span>Enregistrer les coupons au format CSV</span></div>
+      </button>
+      <button id="showCouponsList" class="toolBut frnsss">
+        <div class="icoCont"><span>a</span></div>
+        <div class="txtCont"><span>Afficher les coupons</span></div>
+      </button>
+      <button id="deleteCoupons" class="toolBut frnsss">
+        <div class="icoCont"><span>w</span></div>
+        <div class="txtCont"><span>Supprimer les coupons, vider la mémoire</span></div>
+      </button>
+    </div>
+
+  </div>
+
+
+
+
+
+
+
+
+
+
+
 
 
 
