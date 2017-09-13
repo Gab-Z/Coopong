@@ -23,13 +23,17 @@
 
 </head>
 
-<body>
-  <div id="topBand" class="frwsss">
-    <div id="logoContainer" class="fcnsss">
+<body class="fcnscc">
+  <div id="topBand" >
+    <div id="logoContainer">
       <img id="logo" src="img/logo_afev.png"/>
       <img id="bandeau_top" src="img/title.gif"/>
     </div>
-    <button id="menu_but" clickAction="true" class="icon">m</button>
+    <div id="but_cont">
+      <div id="but_subCont" class="frnccc">
+        <button id="menu_but" clickAction="true" class="icon frnccc">m</button>
+      </div>
+    </div>
   </div>
   <div id="mainBody" class="fcnsss">
     <div id="wraper" class="fcnsss">
@@ -37,14 +41,14 @@
       <form id="form" class="fcnsss">
         <div id="box_civilite" class="fcwscc">
           <div class="field_name"><span>Civilité: </span></div>
-            <div class="frnwccc">
+            <div class="frnccc">
               <div class="fcwscc">
                 <input type="radio" name="civilite" id="Mme" value="Mme" autocomplete="off"/>
-                <label for="Mme"><div class="txtCont"><span>Mme</span></div><div class="retroCont"><span></span></div></label>
+                <label for="Mme" class="frnscc"><div class="txtCont"><span>Mme</span></div><div class="retroCont"><span></span></div></label>
               </div>
               <div class="fcwscc">
                 <input type="radio" name="civilite" id="M." value="M." autocomplete="off"/>
-                <label for="M."><div class="txtCont"><span>M.</span></div><div class="retroCont"><span></span></div></label>
+                <label for="M." class="frnscc"><div class="txtCont"><span>M.</span></div><div class="retroCont"><span></span></div></label>
               </div>
           </div>
         </div>

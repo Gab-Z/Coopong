@@ -185,38 +185,22 @@ window.onload=function(){
       document.getElementById( "wraper" ).classList.add( "invisible" );
       e.currentTarget.textContent = "l";
       menu.classList.remove("invisible");
+      document.addEventListener('backbutton', backButton, false);
     }
 
   },false);
 
-/*
-  document.body.addEventListener("click",function(e){
-    if( e.target.hasAttribute( "clickAction" ) ) return false;
-    var removeList = document.querySelectorAll(".removeIt"),
-        rl = removeList.length;
-    for(var i = 0; i < rl; i++ ){
-      var el = removeList[ i ],
-          ct = el,
-          remove = true;
-      for( var j = 0; 1==1; j++){
-        if(ct === e.currentTarget)break;
-        ct = ct.parentNode;
-        if(ct === e.target){
-          remove = false;
-          break;
-        }
-      }
-
-      if( remove == true ){
-        el.classList.add( "invisible" );
-        el.classList.remove( "removeIt" );
-      }
-
-    }
-  },true);
-  */
 };
-
+var backButton = function(e){
+  if(document.getElementById( "tableContainer" )){
+    closeTableContainer();
+  }else if(! menuIsVisible ){
+    menu.classList.add("invisible");
+    document.getElementById( "wraper" ).classList.remove( "invisible" );
+    e.currentTarget.textContent = "m";
+  }
+  document.removeEventListener('backbutton', backButton);
+}
 var createDbIndexes = function(obStore){
   obStore.createIndex("civilite", "civilite", { unique: false });
   obStore.createIndex("prenom", "prenom", { unique: false });
