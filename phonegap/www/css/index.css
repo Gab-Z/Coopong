@@ -15,7 +15,7 @@ html .icon{
 }
 html, body{
   width:100vw;
-  height:100vh;
+  min-height:100vh;
   margin:0;
   padding:0;
 }
@@ -439,10 +439,7 @@ align-items:center;
 }
 #mainBody{
   width:100%;
-  -webkit-flex: 1 1 auto;
-flex: 1 1 auto;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
+  
 }
 #menu{
   width:100%;
