@@ -404,6 +404,9 @@ align-items:center;
   width:75vw;
   display:table-cell;
 }
+#logoContainer *{
+  display:block;
+}
 #logo{
   margin:4px;
   width:100px;
