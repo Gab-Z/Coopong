@@ -190,14 +190,15 @@ window.onload=function(){
 
   },false);
   document.addEventListener("backbutton", backKeyDown, true);
-
-
 };
 function backKeyDown() {
-  var menu = document.getElementById("menu");
-  menu.classList.add("invisible");
-  document.getElementById( "wraper" ).classList.remove( "invisible" );
-  document.getElementById("menu_but").textContent = "m";
+  if(document.getElementById( "tableContainer" )){
+    closeTableContainer();
+  }else if(! menuIsVisible ){
+    menu.classList.add("invisible");
+    document.getElementById( "wraper" ).classList.remove( "invisible" );
+    document.getElementById("menu_but").textContent = "m";
+  }
   document.removeEventListener("backbutton", backKeyDown);
 }
 var createDbIndexes = function(obStore){
