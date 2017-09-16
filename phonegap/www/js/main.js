@@ -188,9 +188,14 @@ window.onload=function(){
     }
 
   },false);
+  document.addEventListener("backbutton", backKeyDown, true);
+
 
 };
-
+function backKeyDown() {
+     // Call my back key code here.
+    alert('go back!');
+}
 var createDbIndexes = function(obStore){
   obStore.createIndex("civilite", "civilite", { unique: false });
   obStore.createIndex("prenom", "prenom", { unique: false });
