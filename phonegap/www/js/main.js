@@ -185,6 +185,7 @@ window.onload=function(){
       document.getElementById( "wraper" ).classList.add( "invisible" );
       e.currentTarget.textContent = "l";
       menu.classList.remove("invisible");
+      document.addEventListener("backbutton", backKeyDown, true);
     }
 
   },false);
@@ -193,8 +194,10 @@ window.onload=function(){
 
 };
 function backKeyDown() {
-     // Call my back key code here.
-    alert('go back!');
+  var menu = document.getElementById("menu");
+  menu.classList.add("invisible");
+  document.getElementById( "wraper" ).classList.remove( "invisible" );
+  document.getElementById("menu_but").textContent = "m";
 }
 var createDbIndexes = function(obStore){
   obStore.createIndex("civilite", "civilite", { unique: false });
