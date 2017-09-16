@@ -191,7 +191,7 @@ window.onload=function(){
     }
 
   },false);
-  document.addEventListener("backbutton", backKeyDown, true);
+//  document.addEventListener("backbutton", backKeyDown, true);
 };
 function backKeyDown() {
   if(document.getElementById( "tableContainer" )){
