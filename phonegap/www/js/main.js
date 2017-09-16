@@ -196,8 +196,8 @@ window.onload=function(){
 function backKeyDown() {
   if(document.getElementById( "tableContainer" )){
     closeTableContainer();
-  }else if(! menuIsVisible ){
-    menu.classList.add("invisible");
+  }else{
+    document.getElementById("menu").classList.add("invisible");
     document.getElementById( "wraper" ).classList.remove( "invisible" );
     document.getElementById("menu_but").textContent = "m";
   }
