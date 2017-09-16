@@ -251,7 +251,7 @@ var clearForm = function(){
 var clearInput = function(id){
   var el = document.getElementById(id),
       elType = el.getAttribute("type");
-  if( elType == "text" || elType == "tel"){
+  if( ["text","tel","email"].indexOf("elType") > -1 ){
     el.setAttribute("value", "");
     el.value = "";
   }else if( elType == "retro" ){
@@ -311,42 +311,6 @@ var couponsToCSV = function(coupons, callback){
   var str = '' + STR;
   STR = null;
   download(str, cbk);
-}
-var getFullStore3 = function(){
-  var objectStore = db.transaction("coupons").objectStore("coupons"),
-      _champs = champs,
-      cl = _champs.length,
-      _correspondances = correspondances;
-
-  STR='';
-
-  for( var j = 0; j < cl; j++ ){
-    var c = _champs[ j ];
-    STR += '"' + c + '"' + ( j < cl - 1 ? ';' : '\n' );
-  }
-
-  objectStore.openCursor().onsuccess = function(event) {
-    var cursor = event.target.result;
-    if (cursor) {
-      for( var i = 0; i < cl; i++ ){
-        var c = _champs[ i ];
-        if( _correspondances.hasOwnProperty( c ) ){
-          STR += '"' + cursor.value[ _correspondances[ c ] ] + '"' + ( i < cl - 1 ? ';' : '\n' );
-        }else{
-          STR += '""' + ( i < cl - 1 ? ';' : '\n' );
-        }
-      }
-      cursor.continue();
-    }  else {
-    //  alert("No more entries!");
-      alert(STR);
-      var str = '' + STR;
-      STR = null;
-      download(str);
-    }
-
-  };
-
 };
 var download = function(str, callback){
   var blob = new Blob([str], {type: "text/plain;charset=utf-8"}),
@@ -363,6 +327,48 @@ var showCouponsList = function(){
 var couponsToTable = function(coupons){
   var l = coupons.length,
       mainCont = document.createElement("div"),
+      centeredCont = mainCont.appendChild( document.createElement("div") ),
+      bandBottom = centeredCont.appendChild( document.createElement("div") );
+  mainCont.id = "tableContainer";
+  centeredCont.id = "centeredCont";
+  bandBottom.id = "bandBottom";
+  for( var j = 0; j < l; j++ ){
+    var coupon = coupons[ j ],
+        box = bandBottom.appendChild( document.createElement("div") ),
+        numCont = box.appendChild( document.createElement("div") ),
+          numSpan = numCont.appendChild( document.createElement("span") ),
+
+        linesCont = box.appendChild( document.createElement("div") ),
+          nameCont = linesCont.appendChild( document.createElement("div") ),
+            nameSpan = nameCont.appendChild( document.createElement("span") ),
+          emailCont = linesCont.appendChild( document.createElement("div") ),
+            emailSpan = emailCont.appendChild( document.createElement("span") ),
+          telCont = linesCont.appendChild( document.createElement("div") ),
+            telSpan = telCont.appendChild( document.createElement("span") ),
+        editCont = box.appendChild( document.createElement("div") ),
+          editSpan = editCont.appendChild( document.createElement("span") );
+
+    box.classList.add("couponBox","fcnsss");
+    numCont.classList.add("numCont","fcnccc");
+    linesCont.classList.add("linesCont","fcnsss");
+    nameCont.classList.add("frncss");
+    emailCont.classList.add("frncss");
+    telCont.classList.add("frncss");
+    editCont.classList.add("editCont","fcnccc");
+
+    numSpan.textContent = j + 1;
+    editSpan.textContent = "z"
+    nameSpan.textContent = ( coupon.civilite ? coupon.civilite : "") + " " + ( coupon.prenom ? coupon.prenom : "") + " " + ( coupon.nom ? coupon.nom : "");
+    emailSpan.textContent = ( coupon.email ? coupon.email : "Pas d'email");
+    telSpan.textContent = ( coupon.portable ? coupon.portable : "Pas de téléphone");
+  }
+  document.getElementById( "wraper" ).classList.add( "invisible" );
+  document.getElementById( "menu" ).classList.add( "invisible" );
+  document.getElementById( "mainBody" ).appendChild( mainCont );
+};
+var couponsToTable2 = function(coupons){
+  var l = coupons.length,
+      mainCont = document.createElement("div"),
       centeredCont = mainCont.appendChild( document.createElement("div") )
     //  bandTop = centeredCont.appendChild( document.createElement("div") ),
     //  closerCont = bandTop.appendChild( document.createElement("div") ),
@@ -372,8 +378,6 @@ var couponsToTable = function(coupons){
   centeredCont.id = "centeredCont";
   //bandTop.id = "bandTop";
   bandBottom.id = "bandBottom";
-//  closerCont.classList.add( "closerCont" );
-
   for( var j = 0; j < l; j++ ){
     var coupon = coupons[ j ],
         box = bandBottom.appendChild( document.createElement("div") ),
@@ -390,55 +394,7 @@ var couponsToTable = function(coupons){
   document.getElementById( "wraper" ).classList.add( "invisible" );
   document.getElementById( "menu" ).classList.add( "invisible" );
   document.getElementById( "mainBody" ).appendChild( mainCont );
-//  closerCont.addEventListener("click", closeTableContainer, false);
 };
-
-var couponsToTable2 = function(coupons){
-  var l = coupons.length,
-      table= document.createElement("table"),
-      thead = table.appendChild( document.createElement("thead") ),
-      thr = thead.appendChild( document.createElement("tr") ),
-      tbody = table.appendChild( document.createElement("tbody") ),
-      headFields = ["N°","Civilité", "Prénom", "Nom de famille", "Email", "Portable"],
-      hl = headFields.length,
-      _correspondances = correspondances;
-  for( var i = 0; i < hl; i++ ){
-    var th = thr.appendChild( document.createElement("th") ),
-        span = th.appendChild( document.createElement("span") );
-    span.textContent = headFields[ i ];
-  }
-  for( var j = 0; j < l; j++ ){
-    var coupon = coupons[ j ],
-        tr = tbody.appendChild( document.createElement("tr") );
-    for( var k = 0; k < hl; k++ ){
-      var td = tr.appendChild( document.createElement("td") ),
-          tspan = td.appendChild( document.createElement("span") );
-      if( k == 0 ){
-        tspan.textContent = j + 1;
-        continue;
-      }
-      var propName = _correspondances[ headFields[ k ] ];
-      tspan.textContent = coupon.hasOwnProperty( propName ) ? coupon[ propName ] : "";
-    }
-  }
-  var mainCont = document.createElement("div"),
-      centeredCont = mainCont.appendChild( document.createElement("div") )
-      bandTop = centeredCont.appendChild( document.createElement("div") ),
-      closerCont = bandTop.appendChild( document.createElement("div") ),
-      closerSpan = closerCont.appendChild( document.createElement("span") ),
-      bandBottom = centeredCont.appendChild( document.createElement("div") );
-  mainCont.id = "tableContainer";
-  centeredCont.id = "centeredCont";
-  bandTop.id = "bandTop";
-  bandBottom.id = "bandBottom";
-  bandBottom.appendChild( table );
-  closerCont.classList.add( "closerCont" );
-  document.getElementById( "wraper" ).classList.add( "invisible" );
-  document.body.appendChild( mainCont );
-
-  closerCont.addEventListener("click", closeTableContainer, false);
-
-}
 var closeTableContainer = function(e){
   var mainCont = document.getElementById("tableContainer");
   if(mainCont){
@@ -446,7 +402,7 @@ var closeTableContainer = function(e){
     document.getElementById( "wraper" ).classList.remove( "invisible" );
     document.getElementById("menu_but").textContent = "m";
   }
-}
+};
 var deleteCoupons = function(){
   getFullStore(clearDb);
 };
