@@ -174,15 +174,16 @@ window.onload=function(){
       menu = document.getElementById("menu");
   menuBut.addEventListener("click",function(e){
     var menu = document.getElementById("menu"),
-        menuIsVisible = menu.classList.contains("invisible");
+        menuIsInvisible = menu.classList.contains("invisible");
     if(document.getElementById( "tableContainer" )){
       closeTableContainer();
-    }else if(! menuIsVisible ){
+      document.removeEventListener("backbutton", backKeyDown);
+    }else if(! menuIsInvisible ){
       menu.classList.add("invisible");
       document.getElementById( "wraper" ).classList.remove( "invisible" );
       e.currentTarget.textContent = "m";
       document.removeEventListener("backbutton", backKeyDown);
-    } else if( menuIsVisible ){
+    } else if( menuIsInvisible ){
       document.getElementById( "wraper" ).classList.add( "invisible" );
       e.currentTarget.textContent = "l";
       menu.classList.remove("invisible");

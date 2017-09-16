@@ -98,7 +98,8 @@ label > div {
 }
 
 #form input[type="text"],
-#form input[type="tel"]{
+#form input[type="tel"],
+#form input[type="email"]{
   height:45px;
   font-size:1.5em;
   font-family:"noto";
