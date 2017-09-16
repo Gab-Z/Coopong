@@ -181,6 +181,7 @@ window.onload=function(){
       menu.classList.add("invisible");
       document.getElementById( "wraper" ).classList.remove( "invisible" );
       e.currentTarget.textContent = "m";
+      document.removeEventListener("backbutton", backKeyDown);
     } else if( menuIsVisible ){
       document.getElementById( "wraper" ).classList.add( "invisible" );
       e.currentTarget.textContent = "l";
