@@ -198,6 +198,7 @@ function backKeyDown() {
   menu.classList.add("invisible");
   document.getElementById( "wraper" ).classList.remove( "invisible" );
   document.getElementById("menu_but").textContent = "m";
+  document.removeEventListener("backbutton", backKeyDown);
 }
 var createDbIndexes = function(obStore){
   obStore.createIndex("civilite", "civilite", { unique: false });
