@@ -111,10 +111,10 @@ var correspondances = {
 }
 
 var autoFields = {
-  "statut" : "A contacter",
+  "Statut" : "A contacter",
   "Transformé": 0,
   "Type de coupon":"Bénévole"
-}
+};
 var excludedIdFiels = ["submit"];
 
 var request,
@@ -325,26 +325,26 @@ var couponsToCSV = function(coupons, callback){
     STR += '"' + c + '"' + ( j < cl - 1 ? ';' : '\n' );
   }
   var l = coupons.length;
+
   for(var c = 0; c < l; c++ ){
     var coupon = coupons[ c ];
     for( var i = 0; i < cl; i++ ){
-      var c = _champs[ i ];
-      if( _correspondances.hasOwnProperty( c ) ){
-        STR += '"' + coupon[ _correspondances[ c ] ] + '"' + ( i < cl - 1 ? ';' : '\n' );
-      }else if( _autoFields.hasOwnProperty( c ) ){
-        STR += '"' + _autoFields[ c ] + '"' + ( i < cl - 1 ? ';' : '\n' );
+      var f = _champs[ i ];
+      if( _correspondances.hasOwnProperty( f ) ){
+        STR += '"' + coupon[ _correspondances[ f ] ] + '"' + ( i < cl - 1 ? ';' : '\n' );
+      }else if( _autoFields.hasOwnProperty( f ) ){
+        STR += '"' + _autoFields[ f ] + '"' + ( i < cl - 1 ? ';' : '\n' );
       }else{
         STR += '""' + ( i < cl - 1 ? ';' : '\n' );
       }
     }
   }
-  //alert(STR);
   var str = '' + STR;
   STR = false;
   download(str, cbk);
 };
 var download = function(str, callback){
-  var blob = new Blob([str], {type: "text/plain;charset=utf-8"}),
+  var blob = new Blob([str], {type: "text/plain;charset=ISO-8859-1"}),
       cbk = callback || false,
       date = new Date();
   saveAs(blob, "coupons_" + date.getFullYear() + "." + ( date.getMonth() + 1 ) + "." + date.getDate() + "_" + date.getHours() + "h" + date.getMinutes() + "m" + date.getSeconds() + ".csv");
