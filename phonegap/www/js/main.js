@@ -339,7 +339,7 @@ var couponsToCSV = function(coupons, callback){
       }
     }
   }
-  var str = '' + STR;
+  var str = decodeURIComponent('' + STR);
   STR = false;
   download(str, cbk);
 };
