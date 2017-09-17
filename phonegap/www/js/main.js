@@ -110,6 +110,11 @@ var correspondances = {
   "Portable" : "portable"
 }
 
+var autoFields = {
+  "statut" : "A contacter",
+  "Transformé": 0,
+  "Type de coupon":"Bénévole"
+}
 var excludedIdFiels = ["submit"];
 
 var request,
@@ -154,7 +159,7 @@ window.onload=function(){
     db.onerror = function(event) {
       alert("Database error: " + event.target.errorCode);
     };
-    var transaction = db.transaction(["coupons"], "readwrite");
+    var transaction = db.transaction("coupons", "readwrite");
     transaction.oncomplete = function(event) {
     //  alert("All done!");
     };
@@ -175,30 +180,57 @@ window.onload=function(){
   menuBut.addEventListener("click",function(e){
     var menu = document.getElementById("menu"),
         menuIsInvisible = menu.classList.contains("invisible");
-    if(document.getElementById( "tableContainer" )){
+    if(document.getElementById("editContainer")){
+      var editCont = document.getElementById("editContainer");
+      editCont.parentNode.removeChild(editCont);
+      var tableCont = document.getElementById("tableContainer");
+      tableCont.classList.remove("invisible");
+    }else if(document.getElementById( "tableContainer" )){
       closeTableContainer();
       document.removeEventListener("backbutton", backKeyDown);
     }else if(! menuIsInvisible ){
       menu.classList.add("invisible");
-      document.getElementById( "wraper" ).classList.remove( "invisible" );
+      document.getElementById( "form" ).classList.remove( "invisible" );
       e.currentTarget.textContent = "m";
       document.removeEventListener("backbutton", backKeyDown);
     } else if( menuIsInvisible ){
-      document.getElementById( "wraper" ).classList.add( "invisible" );
+      document.getElementById( "form" ).classList.add( "invisible" );
       e.currentTarget.textContent = "l";
       menu.classList.remove("invisible");
       document.addEventListener("backbutton", backKeyDown, true);
     }
 
   },false);
+//  sizeviewer();
 //  document.addEventListener("backbutton", backKeyDown, true);
 };
+function sizeviewer(){
+  var div = document.createElement("div");
+  div.innerHTML = "w:"+window.innerWidth+", h:"+window.innerHeight;
+  div.style.position="fixed";
+  div.style.top = 0;
+  div.style.left = 0;
+  div.style.zIndex = 250;
+  document.body.appendChild(div);
+
+
+  var w = window.innerWidth,
+      h = window.innerHeight,
+      baseH = Math.floor( w / 5 );
+  document.getElementById("topBand").style.height = baseH+"px";
+}
 function backKeyDown() {
-  if(document.getElementById( "tableContainer" )){
+  if(document.getElementById("editContainer")){
+    var editCont = document.getElementById("editContainer");
+    editCont.parentNode.removeChild(editCont);
+    var tableCont = document.getElementById("tableContainer");
+    tableCont.classList.remove("invisible");
+    return false;
+  }else if(document.getElementById( "tableContainer" )){
     closeTableContainer();
   }else{
     document.getElementById("menu").classList.add("invisible");
-    document.getElementById( "wraper" ).classList.remove( "invisible" );
+    document.getElementById( "form" ).classList.remove( "invisible" );
     document.getElementById("menu_but").textContent = "m";
   }
   document.removeEventListener("backbutton", backKeyDown);
@@ -209,6 +241,7 @@ var createDbIndexes = function(obStore){
   obStore.createIndex("nom", "nom", { unique: false });
   obStore.createIndex("email", "email", { unique: false });
   obStore.createIndex("portable", "portable", { unique: false });
+  obStore.createIndex("date", "date", { unique: true });
 }
 var submitForm = function(e){
   e.preventDefault();
@@ -231,7 +264,7 @@ var submitForm = function(e){
   }
   ret.date = Date.now();
   clearForm();
-  var tranz = db.transaction(["coupons"], "readwrite");
+  var tranz = db.transaction("coupons", "readwrite");
   var objStore = tranz.objectStore("coupons");
   var req = objStore.add(ret);
   req.onsuccess = function(event) {
@@ -260,11 +293,6 @@ var clearInput = function(id){
   }
 };
 
-var store = function(ob){
-  var key = ob.date,
-      str = formOutputToString(ob);
-  localStorage.setItem(key, str);
-};
 var getAllCoupons = function(callback, callback2){
   var cbk2 = callback2 || false;
   var objectStore = db.transaction("coupons").objectStore("coupons");
@@ -289,7 +317,8 @@ var couponsToCSV = function(coupons, callback){
   var cbk = callback || false;
       _champs = champs,
       cl = _champs.length,
-      _correspondances = correspondances;
+      _correspondances = correspondances,
+      _autoFields = autoFields;
   STR='';
   for( var j = 0; j < cl; j++ ){
     var c = _champs[ j ];
@@ -302,6 +331,8 @@ var couponsToCSV = function(coupons, callback){
       var c = _champs[ i ];
       if( _correspondances.hasOwnProperty( c ) ){
         STR += '"' + coupon[ _correspondances[ c ] ] + '"' + ( i < cl - 1 ? ';' : '\n' );
+      }else if( _autoFields.hasOwnProperty( c ) ){
+        STR += '"' + _autoFields[ c ] + '"' + ( i < cl - 1 ? ';' : '\n' );
       }else{
         STR += '""' + ( i < cl - 1 ? ';' : '\n' );
       }
@@ -309,7 +340,7 @@ var couponsToCSV = function(coupons, callback){
   }
   //alert(STR);
   var str = '' + STR;
-  STR = null;
+  STR = false;
   download(str, cbk);
 };
 var download = function(str, callback){
@@ -340,31 +371,233 @@ var couponsToTable = function(coupons){
 
         linesCont = box.appendChild( document.createElement("div") ),
           nameCont = linesCont.appendChild( document.createElement("div") ),
+            civSpan = nameCont.appendChild( document.createElement("span") ),
+            prenomSpan = nameCont.appendChild( document.createElement("span") ),
             nameSpan = nameCont.appendChild( document.createElement("span") ),
           emailCont = linesCont.appendChild( document.createElement("div") ),
             emailSpan = emailCont.appendChild( document.createElement("span") ),
           telCont = linesCont.appendChild( document.createElement("div") ),
             telSpan = telCont.appendChild( document.createElement("span") ),
-        editCont = box.appendChild( document.createElement("div") ),
+        editCont = box.appendChild( document.createElement("button") ),
           editSpan = editCont.appendChild( document.createElement("span") );
 
-    box.classList.add("couponBox","fcnsss");
+    box.classList.add("couponBox","frnscc");
     numCont.classList.add("numCont","fcnccc");
     linesCont.classList.add("linesCont","fcnsss");
-    nameCont.classList.add("frncss");
-    emailCont.classList.add("frncss");
-    telCont.classList.add("frncss");
+    civSpan.classList.add("civilite");
+    prenomSpan.classList.add("prenom");
+    nameSpan.classList.add("nom");
+    emailSpan.classList.add("email");
+    telSpan.classList.add("portable");
+    nameCont.classList.add("frncss","nameCont");
+    emailCont.classList.add("frncss","emailCont");
+    telCont.classList.add("frncss","telCont");
     editCont.classList.add("editCont","fcnccc");
 
     numSpan.textContent = j + 1;
-    editSpan.textContent = "z"
-    nameSpan.textContent = ( coupon.civilite ? coupon.civilite : "") + " " + ( coupon.prenom ? coupon.prenom : "") + " " + ( coupon.nom ? coupon.nom : "");
+    editSpan.textContent = "z";
+    civSpan.textContent = ( coupon.civilite ? coupon.civilite : "");
+    prenomSpan.textContent = ( coupon.prenom ? coupon.prenom : "");
+    nameSpan.textContent = ( coupon.nom ? coupon.nom : "");
     emailSpan.textContent = ( coupon.email ? coupon.email : "Pas d'email");
     telSpan.textContent = ( coupon.portable ? coupon.portable : "Pas de téléphone");
+
+    box.id = coupon.date;
+    editCont.setAttribute("dateKey",coupon.date);
+    editCont.addEventListener("click",openCoupon,false);
   }
-  document.getElementById( "wraper" ).classList.add( "invisible" );
+  document.getElementById( "form" ).classList.add( "invisible" );
   document.getElementById( "menu" ).classList.add( "invisible" );
   document.getElementById( "mainBody" ).appendChild( mainCont );
+};
+var openCoupon = function(e){
+  var but = e.currentTarget,
+      keyDate = but.getAttribute("dateKey"),
+      box = document.getElementById(keyDate),
+      civilite = box.querySelector(".civilite").textContent,
+      prenom = box.querySelector(".prenom").textContent,
+      nom = box.querySelector(".nom").textContent,
+      email = box.querySelector(".email").textContent,
+      portable = box.querySelector(".portable").textContent,
+      oldLinesCont = box.querySelector(".linesCont");
+
+  //but.removeEventListener("click",openCoupon);
+  var tableCont = document.getElementById("tableContainer");
+  tableCont.classList.add("invisible");
+  var centerCont = document.getElementById( "wraper" ).appendChild( document.createElement( "div" ) ),
+      linesCont = centerCont.appendChild( document.createElement( "form" ) );
+  centerCont.classList.add("fcnscc","centerdCont");
+  centerCont.id="editContainer";
+  linesCont.classList.add("editMode");
+  linesCont.setAttribute("oldValues",JSON.stringify({
+    civilite: civilite,
+    prenom: prenom,
+    nom: nom,
+    email: email,
+    portable: portable,
+    date: keyDate
+  }));
+
+  var civCont = linesCont.appendChild( document.createElement( "div" ) ),
+        civTitle = civCont.appendChild( document.createElement( "div" ) ),
+          civSpan = civTitle.appendChild( document.createElement( "span" ) ),
+
+        civInputCont = civCont.appendChild( document.createElement( "div" ) ),
+
+          civMCont = civInputCont.appendChild( document.createElement( "div" ) ),
+            civMInput = civMCont.appendChild( document.createElement( "input" ) ),
+            civMLabel = civMCont.appendChild( document.createElement( "label" ) ),
+              civMTitleCont = civMLabel.appendChild( document.createElement( "div" ) ),
+                civMSpan = civMTitleCont.appendChild( document.createElement( "span" ) ),
+              civMRetroCont = civMLabel.appendChild( document.createElement( "div" ) ),
+                civMRetroSpan = civMRetroCont.appendChild( document.createElement( "span" ) ),
+
+          civMmeCont = civInputCont.appendChild( document.createElement( "div" ) ),
+            civMmeInput = civMmeCont.appendChild( document.createElement( "input" ) ),
+            civMmeLabel = civMmeCont.appendChild( document.createElement( "label" ) ),
+              civMmeTitleCont = civMmeLabel.appendChild( document.createElement( "div" ) ),
+                civMmeSpan = civMmeTitleCont.appendChild( document.createElement( "span" ) ),
+              civMmeRetroCont = civMmeLabel.appendChild( document.createElement( "div" ) ),
+                civMmeRetroSpan = civMmeRetroCont.appendChild( document.createElement( "span" ) );
+  civCont.classList.add("fcnsss");
+  civSpan.textContent = "Civilité :"
+  civInputCont.classList.add("frnccc","radioCont");
+  civMInput.setAttribute("type","radio");
+  civMmeInput.setAttribute("type","radio");
+  civMInput.setAttribute("value","M.");
+  civMmeInput.setAttribute("value","Mme");
+  civMmeInput.setAttribute("name","civ");
+  civMInput.setAttribute("name","civ");
+  civMInput.id = "M_"+keyDate;
+  civMmeInput.id = "Mme_"+keyDate;
+  civMLabel.setAttribute("for",civMInput.id);
+  civMmeLabel.setAttribute("for",civMmeInput.id);
+  civMLabel.classList.add("frnscc");
+  civMmeLabel.classList.add("frnscc");
+  civMTitleCont.classList.add("txtCont","fcnccc");
+  civMmeTitleCont.classList.add("txtCont","fcnccc");
+  civMRetroCont.classList.add("retroCont");
+  civMmeRetroCont.classList.add("retroCont");
+  civMSpan.textContent = "M.";
+  civMmeSpan.textContent = "Mme";
+  if(civilite == "M."){
+    civMInput.checked = true;
+  }else if(civilite == "Mme"){
+    civMmeInput.checked = true;
+  }
+
+  var prenomCont = linesCont.appendChild( document.createElement( "label" ) ),
+        prenomTitle = prenomCont.appendChild( document.createElement( "div" ) ),
+          prenomSpan = prenomTitle.appendChild( document.createElement( "span" ) ),
+        prenomInput = prenomCont.appendChild( document.createElement( "input" ) );
+  prenomCont.classList.add("fcnsss");
+  prenomInput.id = "prenom_"+keyDate;
+  prenomInput.setAttribute("name", "prenom" );
+  prenomCont.setAttribute("for", prenomInput.id );
+  prenomSpan.textContent = "Prénom :";
+  prenomInput.setAttribute("type", "text" );
+  prenomInput.value = prenom;
+
+  var nomCont = linesCont.appendChild( document.createElement( "label" ) ),
+        nomTitle = nomCont.appendChild( document.createElement( "div" ) ),
+          nomSpan = nomTitle.appendChild( document.createElement( "span" ) ),
+        nomInput = nomCont.appendChild( document.createElement( "input" ) );
+  nomCont.classList.add("fcnsss");
+  nomInput.id = "nom_"+keyDate;
+  nomInput.setAttribute("name", "nom" );
+  nomCont.setAttribute("for", nomInput.id );
+  nomSpan.textContent = "Nom :";
+  nomInput.setAttribute("type", "text" );
+  nomInput.value = nom;
+
+  var emailCont = linesCont.appendChild( document.createElement( "label" ) ),
+        emailTitle = emailCont.appendChild( document.createElement( "div" ) ),
+          emailSpan = emailTitle.appendChild( document.createElement( "span" ) ),
+        emailInput = emailCont.appendChild( document.createElement( "input" ) );
+  emailCont.classList.add("fcnsss");
+  emailInput.id = "email_"+keyDate;
+  emailInput.setAttribute("name", "email" );
+  emailCont.setAttribute("for", emailInput.id );
+  emailSpan.textContent = "Email :";
+  emailInput.setAttribute("type", "email" );
+  emailInput.value = email;
+
+  var telCont = linesCont.appendChild( document.createElement( "label" ) ),
+        telTitle = telCont.appendChild( document.createElement( "div" ) ),
+          telSpan = telTitle.appendChild( document.createElement( "span" ) ),
+        telInput = telCont.appendChild( document.createElement( "input" ) );
+  telCont.classList.add("fcnsss");
+  telInput.id = "tel_"+keyDate;
+  telInput.setAttribute("name", "portable" );
+  telCont.setAttribute("for", telInput.id );
+  telSpan.textContent = "Portable :";
+  telInput.setAttribute("type", "tel" );
+  telInput.value = portable;
+
+  var submitCont = linesCont.appendChild( document.createElement( "label" ) ),
+      submit = submitCont.appendChild( document.createElement( "input" ) );
+  submitCont.classList.add("fcnccc");
+  submit.setAttribute("type","image");
+  submit.setAttribute("src","img/bouton_envoyer.gif");
+
+  linesCont.addEventListener("submit",updateCoupon,true);
+
+};
+var updateCoupon = function(e){
+  e.preventDefault();
+  var form = e.currentTarget,
+      els = form.elements,
+      l = els.length,
+      ret={};
+  for( var i = 0; i < l; i++ ){
+    var el = els[ i ];
+    if(el.hasAttribute("name")){
+      var name = el.getAttribute("name");
+      switch(name){
+        case "civ" :
+          ret.civilite = el.value;
+        case "prenom" :
+          ret.prenom = el.value;
+        case "nom" :
+          ret.nom = el.value;
+        case "email" :
+          ret.email = el.value;
+        case "portable" :
+          ret.portable = el.value;
+      };
+    };
+  };
+  var oldValues = JSON.parse(form.getAttribute("oldvalues"));
+  ret.date = parseFloat(oldValues.date);
+  STR = ret;
+  //alert(JSON.stringify(ret));
+
+  var objectStore = db.transaction("coupons", "readwrite").objectStore("coupons");
+  var req = objectStore.get(ret.date);
+  req.onerror = function(event) {
+    alert(SON.stringify(event))
+  };
+  req.onsuccess = function(event) {
+    var data = req.result;
+    data.civilite = STR.civilite;
+    data.prenom = STR.prenom;
+    data.nom = STR.nom;
+    data.email = STR.email;
+    data.portable = STR.portable;
+    STR = false;
+    var requestUpdate = objectStore.put(data);
+     requestUpdate.onerror = function(event) {
+       // Faire quelque chose avec l’erreur
+     };
+     requestUpdate.onsuccess = function(event) {
+       var editContainer = document.getElementById("editContainer");
+       editContainer.parentNode.removeChild( editContainer );
+       closeTableContainer();
+       showCouponsList();
+       document.getElementById("menu_but").textContent="l";
+     };
+  };
+
 };
 var couponsToTable2 = function(coupons){
   var l = coupons.length,
@@ -391,7 +624,7 @@ var couponsToTable2 = function(coupons){
       nameSpan.textContent = (j + 1) + " - " + ( coupon.civilite ? coupon.civilite : "") + " " + ( coupon.prenom ? coupon.prenom : "") + " " + ( coupon.nom ? coupon.nom : "");
       dataSpan.textContent = ( coupon.email ? coupon.email : "Pas d'email") + " // " + ( coupon.portable ? coupon.portable : "Pas de téléphone")
   }
-  document.getElementById( "wraper" ).classList.add( "invisible" );
+  document.getElementById( "form" ).classList.add( "invisible" );
   document.getElementById( "menu" ).classList.add( "invisible" );
   document.getElementById( "mainBody" ).appendChild( mainCont );
 };
@@ -399,15 +632,16 @@ var closeTableContainer = function(e){
   var mainCont = document.getElementById("tableContainer");
   if(mainCont){
     mainCont.parentNode.removeChild( mainCont );
-    document.getElementById( "wraper" ).classList.remove( "invisible" );
+    document.getElementById( "form" ).classList.remove( "invisible" );
     document.getElementById("menu_but").textContent = "m";
   }
 };
 var deleteCoupons = function(){
-  getFullStore(clearDb);
+  //getFullStore(clearDb);
+  clearDb();
 };
 var clearDb = function(){
-  var transaction = db.transaction(["coupons"], "readwrite");
+  var transaction = db.transaction("coupons", "readwrite");
 /*
   // en cas de succès de l'ouverture de la transaction
   transaction.oncomplete = function(event) {

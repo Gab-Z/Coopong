@@ -1,7 +1,8 @@
 .fcnsss,.fcnccc,.fcnscc,.fcncsc,.fcnccs,.fcncss,.fcnscs,.fcnssc,
 .fcwsss,.fcwccc,.fcwscc,.fcwcsc,.fcwccs,.fcwcss,.fcwscs,.fcwssc,
 .frnsss,.frnccc,.frnscc,.frncsc,.frnccs,.frncss,.frnscs,.frnssc,
-.frwsss,.frwccc,.frwscc,.frwcsc,.frwccs,.frwcss,.frwscs,.frwssc{
+.frwsss,.frwccc,.frwscc,.frwcsc,.frwccs,.frwcss,.frwscs,.frwssc,
+.frnecc{
   display:-webkit-flex;
   display:flex;
 }
@@ -13,7 +14,8 @@
   -webkit-flex-flow:column wrap;
   flex-flow:column wrap;
 }
-.frnsss,.frnccc,.frnscc,.frncsc,.frnccs,.frncss,.frnscs,.frnssc{
+.frnsss,.frnccc,.frnscc,.frncsc,.frnccs,.frncss,.frnscs,.frnssc,
+.frnecc{
   -webkit-flex-flow:row nowrap;
   flex-flow:row nowrap;
 }
@@ -35,6 +37,10 @@
   -webkit-justify-content:center;
   justify-content:center;
 }
+.frnecc{
+  -webkit-justify-content:flex-end;
+  justify-content:flex-end;
+}
 .fcnsss,.fcncsc,.fcncss,.fcnssc,
 .fcwsss,.fcwcsc,.fcwcss,.fcwssc,
 .frnsss,.frncsc,.frncss,.frnssc,
@@ -45,7 +51,8 @@
 .fcnccc,.fcnscc,.fcnccs,.fcnscs,
 .fcwccc,.fcwscc,.fcwccs,.fcwscs,
 .frnccc,.frnscc,.frnccs,.frnscs,
-.frwccc,.frwscc,.frwccs,.frwscs{
+.frwccc,.frwscc,.frwccs,.frwscs,
+.frnecc{
   -webkit-align-content:center;
   align-content:center;
 }
@@ -59,7 +66,8 @@
 .fcnccc,.fcnscc,.fcncsc,.fcnssc,
 .fcwccc,.fcwscc,.fcwcsc,.fcwssc,
 .frnccc,.frnscc,.frncsc,.frnssc,
-.frwccc,.frwscc,.frwcsc,.frwssc{
+.frwccc,.frwscc,.frwcsc,.frwssc,
+.frnecc{
   -webkit-align-items:center;
   align-items:center;
 }

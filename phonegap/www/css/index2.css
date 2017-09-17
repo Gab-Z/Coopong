@@ -6,12 +6,9 @@
  font-family: "noto";
  src: url("NotoSans-Regular-webfont.woff") format("woff");
 }
-html{
+html,#topBand{
   background-color:rgb(196, 180, 130);
   font-family : "noto", arial;
-}
-#topBand{
-  background-color:rgb(214, 127, 25);
 }
 html .icon{
   font-family:"icons";
@@ -199,53 +196,49 @@ form span{
 }
 
 #topBand{
-  height:15vw;
-}
-
-#logoContainer,
-#menuButCont,
-#but_subCont,
-#menu_but{
-  -webkit-align-self:stretch;
-  align-self:stretch;
-}
-#bandeau_top{
-  height:11vw;
-}
-#logo{
-  height:3vw;
-  margin:0.4vw
-}
-#but_subCont{
-  width:25vw;
-}
-#menu_but{
-  width:20vw;
-}
-
-
-#topBand{
   width: 100vw;
   z-index:20;
+  min-height:15vw;
+  max-height:88px;
+  min-height:55px;
   border-bottom:2px solid white;
 }
 #logoContainer{
   width:75vw;
+  height:15vw;
+  max-height:88px;
+  min-height:55px;
 }
+#logo{
+  margin:4px;
+  width:100px;
+}
+#bandeau_top{
+  max-width:100%;
 
+}
 #menuButCont{
   width:25vw;
-
+  min-width:65px;
+  height:15vw;
+  max-height:88px;
+  min-height:55px;
+}
+#but_subCont{
+  position:absolute;
+  top:0;
+  bottom:0;
 }
 #menu_but{
-
+  align-self:stretch;
   background-color:rgba(93, 93, 93, 0.1);
   width:20vw;
-  min-width:65px;
-  font-size:2.5em;
+    min-width:65px;
+  font-size:3em;
   color:black;
   outline: 0;
   border:none;
+  border-left:2px solid white;
 }
 #mainBody{
   width:100%;
@@ -308,11 +301,4 @@ body *.invisible{
 }
 .editMode .radioCont > div{
   width:40%;
-}
-
-@media only screen
-  and (min-device-width: 640px)
-{
-
-}
 }
