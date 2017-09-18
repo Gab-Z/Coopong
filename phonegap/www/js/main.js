@@ -190,7 +190,7 @@ window.onload=function(){
   menuBut.addEventListener("click",function(e){
     var menuBut = e.currentTarget;
     menuBut.classList.remove("rotateReset");
-    menuBut.classList.add("rotate")
+    menuBut.classList.add("rotate");
     removeLog();
     var menu = document.getElementById("menu"),
         menuIsInvisible = menu.classList.contains("invisible");
@@ -217,6 +217,26 @@ window.onload=function(){
   },false);
 
 };
+function backKeyDown() {
+  var menuBut = document.getElementById("menu_but"),
+  menuBut.classList.remove("rotateReset");
+  menuBut.classList.add("rotate");
+  removeLog();
+  if(document.getElementById("editContainer")){
+    var editCont = document.getElementById("editContainer");
+    editCont.parentNode.removeChild(editCont);
+    var tableCont = document.getElementById("tableContainer");
+    tableCont.classList.remove("invisible");
+    return false;
+  }else if(document.getElementById( "tableContainer" )){
+    closeTableContainer();
+  }else{
+    document.getElementById("menu").classList.add("invisible");
+    document.getElementById( "formWraper" ).classList.remove( "invisible" );
+    document.getElementById("menu_but").querySelector("span").textContent = "m";
+  }
+  document.removeEventListener("backbutton", backKeyDown);
+}
 var endMenuButRotation = function(e){
   var menuBut = document.getElementById("menu_but");
   menuBut.removeEventListener("transitionend",endMenuButRotation);
@@ -275,23 +295,7 @@ var removeLog = function(){
   var cont = document.getElementById("log");
   cont.parentNode.removeChild(cont);
 }
-function backKeyDown() {
-  removeLog();
-  if(document.getElementById("editContainer")){
-    var editCont = document.getElementById("editContainer");
-    editCont.parentNode.removeChild(editCont);
-    var tableCont = document.getElementById("tableContainer");
-    tableCont.classList.remove("invisible");
-    return false;
-  }else if(document.getElementById( "tableContainer" )){
-    closeTableContainer();
-  }else{
-    document.getElementById("menu").classList.add("invisible");
-    document.getElementById( "formWraper" ).classList.remove( "invisible" );
-    document.getElementById("menu_but").querySelector("span").textContent = "m";
-  }
-  document.removeEventListener("backbutton", backKeyDown);
-}
+
 var createDbIndexes = function(obStore){
   obStore.createIndex("civilite", "civilite", { unique: false });
   obStore.createIndex("prenom", "prenom", { unique: false });
