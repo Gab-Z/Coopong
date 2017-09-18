@@ -218,7 +218,7 @@ window.onload=function(){
 
 };
 function backKeyDown() {
-  var menuBut = document.getElementById("menu_but"),
+  var menuBut = document.getElementById("menu_but");
   menuBut.classList.remove("rotateReset");
   menuBut.classList.add("rotate");
   removeLog();
