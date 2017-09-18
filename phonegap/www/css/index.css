@@ -7,11 +7,11 @@
  src: url("NotoSans-Regular-webfont.woff") format("woff");
 }
 html{
-  background-color:rgb(196, 180, 130);
+  background-color:rgb(207, 193, 147);
   font-family : "noto", arial;
 }
 #topBand{
-  background-color:rgb(214, 127, 25);
+  background-color:#becf3e;
 }
 html .icon{
   font-family:"icons";
@@ -32,6 +32,8 @@ html, body{
 }
 #form{
   width: 100%;
+  -webkit-align-self:center;
+  align-self:center;
 }
 #form > * {
   margin-top:2px;
@@ -200,6 +202,8 @@ form span{
 
 #topBand{
   height:15vw;
+  -webkit-aflex : 1 1 auto;
+  flex : 1 1 auto;
 }
 
 #logoContainer,
@@ -210,7 +214,7 @@ form span{
   align-self:stretch;
 }
 #bandeau_top{
-  height:11vw;
+  height:10vw;
 }
 #logo{
   height:3vw;
@@ -219,15 +223,13 @@ form span{
 #but_subCont{
   width:25vw;
 }
-#menu_but{
-  width:20vw;
-}
+
 
 
 #topBand{
   width: 100vw;
   z-index:20;
-  border-bottom:2px solid white;
+  border-bottom:4px solid white;
 }
 #logoContainer{
   width:75vw;
@@ -238,7 +240,6 @@ form span{
 
 }
 #menu_but{
-
   background-color:rgba(93, 93, 93, 0.1);
   width:20vw;
   min-width:65px;
@@ -247,6 +248,25 @@ form span{
   outline: 0;
   border:none;
 }
+#menu_but span{
+  -webkit-transition:  -webkit-transform 0s;
+  transition: transform 0s;
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+#menu_but.rotate span{
+  -webkit-transform: rotate(-360deg);
+  transform: rotate(-360deg);
+  -webkit-transition: -webkit-transform 0.7s;
+  transition: transform 0.7s;
+}
+#menu_but.rotateReset span{
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+  -webkit-transition: -webkit-transform 0s;
+  transition: transform 0s;
+}
+
 #mainBody{
   width:100%;
   -webkit-align-self:stretch;
@@ -277,6 +297,9 @@ body *.invisible{
   align-self:center;
 }
 
+#bandBottom{
+  overflow-y: auto;
+}
 
 .centerdCont{
   -webkit-align-self:center;
@@ -310,9 +333,44 @@ body *.invisible{
   width:40%;
 }
 
-@media only screen
-  and (min-device-width: 640px)
-{
+#log{
+  max-height:50vh;
+  overflow:hidden;
+  -webkit-transition-property: max-height;
+  -webkit-transition-duration: 2s;
+  -webkit-transition-timing-function: ease;
+  transition-property: max-height;
+  transition-duration: 2s;
+  transition-timing-function: ease;
 
 }
+#log.logOff{
+  max-height:0;
+  -webkit-transition-property: max-height;
+  -webkit-transition-duration: 2s;
+  -webkit-transition-timing-function: ease;
+  transition-property: max-height;
+  transition-duration: 2s;
+  transition-timing-function: ease;
+}
+#log.success{
+  background-color:rgb(135, 196, 34);
+}
+#log.err{
+  background-color:rgb(196, 73, 34);
+}
+#log > div{
+  padding:2px;
+}
+#log > div span{
+  margin-top: 1vw;
+  margin-bottom: 1vw;
+}
+#log .logCont{
+  width:70%;
+}
+#log .icoCont{
+  width:25%;
+  font-family: "icons";
+  font-size: 2em;
 }

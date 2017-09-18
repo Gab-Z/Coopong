@@ -1,26 +1,29 @@
 var myFileUrl = "";
 function saveAs (fileData,fileName) {
-  alert("save as start")
-    // Get access to the file system
     window.requestFileSystem(LocalFileSystem.PERSISTENT, 0, function (fileSystem) {
-        // Create the file.
         fileSystem.root.getFile(fileName, { create: true, exclusive: false }, function (entry) {
-            // After you save the file, you can access it with this URL
             myFileUrl = entry.toURL();
             entry.createWriter(function (writer) {
                writer.onwriteend = function (evt) {
-                    alert("Successfully saved file to " + myFileUrl);
+                log({ txt:"Fichier enregistré dans : " + myFileUrl,
+                      ico:"k",
+                      style:"success"});
                 };
-                // Write to the file
                 writer.write(fileData);
             }, function (error) {
-                alert("Error: Could not create file writer, " + error.code);
+                log({ txt:"Erreur, le fichier n'a pas été crée. Veuillez réessayer plus tard",
+                      ico:"o",
+                      style:"err"});
             });
         }, function (error) {
-            alert("Error: Could not create file, " + error.code);
+          log({ txt:"Erreur, le fichier n'a pas été crée. Veuillez réessayer plus tard",
+                ico:"o",
+                style:"err"});
         });
     }, function (evt) {
-        alert("Error: Could not access file system, " + evt.target.error.code);
+        log({ txt:"Erreur, Cet appareil n'autorise pas l'accès aux fichiers.",
+              ico:"o",
+              style:"err"});
     });
 }
 
@@ -135,16 +138,17 @@ var testValidity = function(input){
   }
   return true;
 }
-function fileHandler( fileEntry ) {
-    alert( fileEntry.name + " | " + fileEntry.toURL() );
-}
 window.onload=function(){
   if (!window.indexedDB) {
-    window.alert("Votre navigateur ne supporte pas une version stable d'IndexedDB. Quelques fonctionnalités ne seront pas disponibles.")
+    log({ txt:"Votre navigateur ne supporte pas une version stable d'IndexedDB. Cette fonctionnalité est indispensable.",
+          ico:"o",
+          style:"err"});
   }
   request = window.indexedDB.open("DB_Coupong",1);
   request.onerror = function(event) {
-    alert("Pourquoi ne permettez-vous pas à ma web app d'utiliser IndexedDB?!");
+    log({ txt:"Merci d'autoriser l'accès à IndexedDB. Cette fonctionnalité est indispensable.",
+          ico:"o",
+          style:"err"});
   };
   request.onupgradeneeded = function(event) {
     db = event.target.result;
@@ -157,14 +161,18 @@ window.onload=function(){
   request.onsuccess = function(event) {
     db = event.target.result;
     db.onerror = function(event) {
-      alert("Database error: " + event.target.errorCode);
+      log({ txt:"Erreur de base de donnée. Veuillez réessayer plus tard",
+            ico:"o",
+            style:"err"});
     };
     var transaction = db.transaction("coupons", "readwrite");
     transaction.oncomplete = function(event) {
-    //  alert("All done!");
+
     };
     transaction.onerror = function(event) {
-      // N'oubliez pas de gérer les erreurs !
+      log({ txt:"Erreur de base de donnée. Veuillez réessayer plus tard",
+            ico:"o",
+            style:"err"});
     };
     objectStore = transaction.objectStore("coupons");
   };
@@ -177,7 +185,13 @@ window.onload=function(){
 
   var menuBut = document.getElementById("menu_but"),
       menu = document.getElementById("menu");
+  menuBut.addEventListener("transitionend",endMenuButRotation, true);
+
   menuBut.addEventListener("click",function(e){
+    var menuBut = e.currentTarget;
+    menuBut.classList.remove("rotateReset");
+    menuBut.classList.add("rotate")
+    removeLog();
     var menu = document.getElementById("menu"),
         menuIsInvisible = menu.classList.contains("invisible");
     if(document.getElementById("editContainer")){
@@ -190,36 +204,81 @@ window.onload=function(){
       document.removeEventListener("backbutton", backKeyDown);
     }else if(! menuIsInvisible ){
       menu.classList.add("invisible");
-      document.getElementById( "form" ).classList.remove( "invisible" );
-      e.currentTarget.textContent = "m";
+      document.getElementById( "formWraper" ).classList.remove( "invisible" );
+      e.currentTarget.querySelector("span").textContent = "m";
       document.removeEventListener("backbutton", backKeyDown);
     } else if( menuIsInvisible ){
-      document.getElementById( "form" ).classList.add( "invisible" );
-      e.currentTarget.textContent = "l";
+      document.getElementById( "formWraper" ).classList.add( "invisible" );
+      e.currentTarget.querySelector("span").textContent = "l";
       menu.classList.remove("invisible");
       document.addEventListener("backbutton", backKeyDown, true);
     }
 
   },false);
-//  sizeviewer();
-//  document.addEventListener("backbutton", backKeyDown, true);
+  log({ txt:"Erreur de base de donnée.<br/>Veuillez réessayer plus tard\naaaa\nbbbbb",
+        ico:"o",
+        style:"success"});
 };
-function sizeviewer(){
-  var div = document.createElement("div");
-  div.innerHTML = "w:"+window.innerWidth+", h:"+window.innerHeight;
-  div.style.position="fixed";
-  div.style.top = 0;
-  div.style.left = 0;
-  div.style.zIndex = 250;
-  document.body.appendChild(div);
-
-
-  var w = window.innerWidth,
-      h = window.innerHeight,
-      baseH = Math.floor( w / 5 );
-  document.getElementById("topBand").style.height = baseH+"px";
+var endMenuButRotation = function(e){
+  var menuBut = document.getElementById("menu_but");
+  menuBut.removeEventListener("transitionend",endMenuButRotation);
+  menuBut.addEventListener("transitionend",resetMenuButRotation, true);
+  menuBut.classList.add("rotateReset");
+  menuBut.classList.remove("rotate");
+};
+var resetMenuButRotation = function(e){
+  var menuBut = document.getElementById("menu_but");
+  menuBut.removeEventListener("transitionend",resetMenuButRotation);
+  menuBut.addEventListener("transitionend",endResetMenuButRotation, true);
+  menuBut.classList.remove("rotateReset");
+};
+var endResetMenuButRotation = function(e){
+  var menuBut = document.getElementById("menu_but");
+  menuBut.removeEventListener("transitionend",endResetMenuButRotation);
+  menuBut.addEventListener("transitionend",endMenuButRotation, true);
+    menuBut.classList.remove("rotateReset");
+      menuBut.classList.remove("rotate");
+};
+var log = function(ob){
+  var cont = document.createElement("div");
+  document.body.insertBefore(cont, document.getElementById("mainBody"));
+  var logCont = cont.appendChild(document.createElement("div")),
+      logSpan = logCont.appendChild(document.createElement("span")),
+      icoCont = cont.appendChild(document.createElement("div")),
+      icoSpan = icoCont.appendChild(document.createElement("span"));
+  cont.id = "log";
+  cont.classList.add("frnccc", "fullW", "logOff");
+  logCont.classList.add("frncss", "logCont");
+  icoCont.classList.add("fcnccc", "icoCont");
+  logSpan.textContent = ob.txt;
+  if(ob.ico) icoSpan.textContent = ob.ico;
+  if(ob.style) cont.classList.add(ob.style);
+  window.setTimeout(startLogTransition, 5);
+};
+var startLogTransition = function(){
+  if(!document.getElementById("log"))return false;
+  var cont = document.getElementById("log");
+  cont.addEventListener("transitionend", endLogTransition, true);
+  cont.classList.toggle("logOff");
+};
+var endLogTransition = function(e){
+  if(!document.getElementById("log"))return false;
+  e.currentTarget.removeEventListener("transitionend", endLogTransition);
+  window.setTimeout(waitLog, 1500);
+};
+var waitLog = function(){
+  if(!document.getElementById("log"))return false;
+  var cont = document.getElementById("log");
+  cont.addEventListener("transitionend", removeLog, true);
+  cont.classList.toggle("logOff");
+};
+var removeLog = function(){
+  if(!document.getElementById("log"))return false;
+  var cont = document.getElementById("log");
+  cont.parentNode.removeChild(cont);
 }
 function backKeyDown() {
+  removeLog();
   if(document.getElementById("editContainer")){
     var editCont = document.getElementById("editContainer");
     editCont.parentNode.removeChild(editCont);
@@ -230,8 +289,8 @@ function backKeyDown() {
     closeTableContainer();
   }else{
     document.getElementById("menu").classList.add("invisible");
-    document.getElementById( "form" ).classList.remove( "invisible" );
-    document.getElementById("menu_but").textContent = "m";
+    document.getElementById( "formWraper" ).classList.remove( "invisible" );
+    document.getElementById("menu_but").querySelector("span").textContent = "m";
   }
   document.removeEventListener("backbutton", backKeyDown);
 }
@@ -269,7 +328,7 @@ var submitForm = function(e){
   var req = objStore.add(ret);
   req.onsuccess = function(event) {
     // event.target.result == customerData[i].ssn;
-    alert("coupon : " + event.target.result + " ajouté avec succès")
+    log({txt:"Coupon enregistré avec succès",ico:"k",style:"success"})
   };
 };
 
@@ -283,11 +342,11 @@ var clearForm = function(){
 };
 var clearInput = function(id){
   var el = document.getElementById(id),
-      elType = el.getAttribute("type");
-  if( ["text","tel","email"].indexOf("elType") > -1 ){
+      elType = el.type || el.getAttribute("type");
+  if( ["text","tel","email"].indexOf(elType) > -1 ){
     el.setAttribute("value", "");
     el.value = "";
-  }else if( elType == "retro" ){
+  }else if( elType == "radio" ){
     el.setAttribute("checked", false);
     el.checked = false;
   }
@@ -406,7 +465,7 @@ var couponsToTable = function(coupons){
     editCont.setAttribute("dateKey",coupon.date);
     editCont.addEventListener("click",openCoupon,false);
   }
-  document.getElementById( "form" ).classList.add( "invisible" );
+  document.getElementById( "formWraper" ).classList.add( "invisible" );
   document.getElementById( "menu" ).classList.add( "invisible" );
   document.getElementById( "mainBody" ).appendChild( mainCont );
 };
@@ -420,8 +479,6 @@ var openCoupon = function(e){
       email = box.querySelector(".email").textContent,
       portable = box.querySelector(".portable").textContent,
       oldLinesCont = box.querySelector(".linesCont");
-
-  //but.removeEventListener("click",openCoupon);
   var tableCont = document.getElementById("tableContainer");
   tableCont.classList.add("invisible");
   var centerCont = document.getElementById( "wraper" ).appendChild( document.createElement( "div" ) ),
@@ -496,6 +553,7 @@ var openCoupon = function(e){
   prenomCont.setAttribute("for", prenomInput.id );
   prenomSpan.textContent = "Prénom :";
   prenomInput.setAttribute("type", "text" );
+
   prenomInput.value = prenom;
 
   var nomCont = linesCont.appendChild( document.createElement( "label" ) ),
@@ -570,12 +628,12 @@ var updateCoupon = function(e){
   var oldValues = JSON.parse(form.getAttribute("oldvalues"));
   ret.date = parseFloat(oldValues.date);
   STR = ret;
-  //alert(JSON.stringify(ret));
-
   var objectStore = db.transaction("coupons", "readwrite").objectStore("coupons");
   var req = objectStore.get(ret.date);
   req.onerror = function(event) {
-    alert(SON.stringify(event))
+    log({ txt:"Une erreur est survenue. Veuillez réessayer plus tard.",
+          ico:"o",
+          style:"err"});
   };
   req.onsuccess = function(event) {
     var data = req.result;
@@ -594,46 +652,17 @@ var updateCoupon = function(e){
        editContainer.parentNode.removeChild( editContainer );
        closeTableContainer();
        showCouponsList();
-       document.getElementById("menu_but").textContent="l";
+       document.getElementById("menu_but").querySelector("span").textContent="l";
      };
   };
 
-};
-var couponsToTable2 = function(coupons){
-  var l = coupons.length,
-      mainCont = document.createElement("div"),
-      centeredCont = mainCont.appendChild( document.createElement("div") )
-    //  bandTop = centeredCont.appendChild( document.createElement("div") ),
-    //  closerCont = bandTop.appendChild( document.createElement("div") ),
-    //  closerSpan = closerCont.appendChild( document.createElement("span") ),
-      bandBottom = centeredCont.appendChild( document.createElement("div") );
-  mainCont.id = "tableContainer";
-  centeredCont.id = "centeredCont";
-  //bandTop.id = "bandTop";
-  bandBottom.id = "bandBottom";
-  for( var j = 0; j < l; j++ ){
-    var coupon = coupons[ j ],
-        box = bandBottom.appendChild( document.createElement("div") ),
-        nameLine = box.appendChild( document.createElement("div") ),
-        nameSpan = nameLine.appendChild( document.createElement("span") ),
-        dataLine = box.appendChild( document.createElement("div") ),
-        dataSpan = dataLine.appendChild( document.createElement("span") );
-      box.classList.add("couponBox");
-      nameLine.classList.add("nameLine");
-      dataLine.classList.add("dataLine");
-      nameSpan.textContent = (j + 1) + " - " + ( coupon.civilite ? coupon.civilite : "") + " " + ( coupon.prenom ? coupon.prenom : "") + " " + ( coupon.nom ? coupon.nom : "");
-      dataSpan.textContent = ( coupon.email ? coupon.email : "Pas d'email") + " // " + ( coupon.portable ? coupon.portable : "Pas de téléphone")
-  }
-  document.getElementById( "form" ).classList.add( "invisible" );
-  document.getElementById( "menu" ).classList.add( "invisible" );
-  document.getElementById( "mainBody" ).appendChild( mainCont );
 };
 var closeTableContainer = function(e){
   var mainCont = document.getElementById("tableContainer");
   if(mainCont){
     mainCont.parentNode.removeChild( mainCont );
-    document.getElementById( "form" ).classList.remove( "invisible" );
-    document.getElementById("menu_but").textContent = "m";
+    document.getElementById( "formWraper" ).classList.remove( "invisible" );
+    document.getElementById("menu_but").querySelector("span").textContent = "m";
   }
 };
 var deleteCoupons = function(){
@@ -642,15 +671,10 @@ var deleteCoupons = function(){
 };
 var clearDb = function(){
   var transaction = db.transaction("coupons", "readwrite");
-/*
-  // en cas de succès de l'ouverture de la transaction
-  transaction.oncomplete = function(event) {
-	   //note.innerHTML += '<li>Transaction complété : modification de la base de données terminée.</li>';
-  };
-*/
-  // en cas d'échec de l'ouverture de la transaction
   transaction.onerror = function(event) {
-    alert("error")
+    log({ txt:"Une erreur est survenue. Veuillez réessayer plus tard.",
+          ico:"o",
+          style:"err"});
   };
   var objectStore = transaction.objectStore("coupons");
   var objectStoreRequest = objectStore.clear();
