@@ -215,9 +215,7 @@ window.onload=function(){
     }
 
   },false);
-  log({ txt:"Erreur de base de donnée.<br/>Veuillez réessayer plus tard\naaaa\nbbbbb",
-        ico:"o",
-        style:"success"});
+
 };
 var endMenuButRotation = function(e){
   var menuBut = document.getElementById("menu_but");
