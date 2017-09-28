@@ -160,7 +160,8 @@ form span{
 }
 #menu .toolBut .txtCont{
   font-family:"noto";
-  font-size:1.1em;
+  font-size:1.5em;
+  color:#222222;
   padding:6px;
 }
 
@@ -202,7 +203,8 @@ form span{
 
 #topBand{
   height:15vw;
-
+  min-height:15vw;
+  max-height:15vw;
 }
 
 #logoContainer,
@@ -239,7 +241,7 @@ form span{
 
 }
 #menu_but{
-  background-color:rgba(93, 93, 93, 0.1);
+  background-color:rgba(93, 93, 93, 0.07);
   width:20vw;
   min-width:65px;
   font-size:2.5em;
@@ -372,4 +374,30 @@ body *.invisible{
   width:25%;
   font-family: "icons";
   font-size: 2em;
+}
+#editContainer,
+#tableContainer,
+#menu,
+#formWraper,
+#faqContainer{
+  -webkit-transform: scale(1, 1);
+  transform: scale(1, 1);
+  -webkit-transition: -webkit-transform .07s;
+  transition: transform .07s;
+  -webkit-transform-origin:top left;
+  transform-origin:top left;
+}
+
+#editContainer.minimized,
+#tableContainer.minimized,
+#menu.minimized,
+#formWraper.minimized,
+#formWraper.minimized,
+#faqContainer.minimized{
+  -webkit-transform: scale(0, 0);
+  transform: scale(0, 0);
+  -webkit-transition: -webkit-transform 0s;
+  transition: transform 0s;
+  -webkit-transform-origin:top left;
+  transform-origin:top left;
 }

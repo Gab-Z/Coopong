@@ -28,82 +28,83 @@ function saveAs (fileData,fileName) {
 }
 
 var champs = [
-"Prénom",
-"Nom de famille",
-"ID",
-"Civilité",
-"Fonction",
-"Service",
-"Nom du compte",
-"Description compte",
-"Site web",
-"Email",
-"Email(s) secondaire(s)",
-"Portable",
-"Téléphone",
-"Ligne directe",
-"Téléphone autre",
-"Fax",
-"Adresse principale - Rue 1",
-"Adresse principale - Ville",
-"Adresse principale - Région",
-"Adresse principale - Code Postal",
-"Adresse principale - Pays",
-"Adresse secondaire - Rue 1",
-"Adresse secondaire - Ville",
-"Adresse secondaire - Région",
-"Adresse secondaire - Code Postal",
-"Adresse secondaire - Pays",
-"Statut",
-"Description Statut",
-"Origine principale",
-"Description de la principale origine du Coupon",
-"Description",
-"Transformé",
-"Nom Affaire",
-"Montant Affaire",
-"Fait référence à",
-"Id Campagne communication",
-"Ne pas appeler",
-"Nom sur le portail",
-"Portail application",
-"Rapporte à",
-"Assistant",
-"Téléphone assistant",
-"Anniversaire",
-"Contact (ID)",
-"Partenaire (ID)",
-"Affaire (ID)",
-"Assigné à",
-"Assigné à (ID)",
-"Date de création",
-"Date de modification",
-"Créé par (ID)",
-"Modifié par (ID)",
-"Supprimé",
-"Photo",
-"Type de coupon",
-"Changement de ville prévu dans l&#039;année scolaire ?",
-"Diplôme préparé",
-"L&#039;année prochaine tu serais",
-"Pourquoi souhaites-tu faire un service civique à l&#039;Afev ?",
-"Année scolaire",
-"Si plus étudiant, quel niveau ?",
-"Filière",
-"Quelle structure ?",
-"Si oui, details",
-"Si plus étudiant, quelle filière ?",
-"A-t-il déjà participé  à une action associative et solidaire ?",
-"Est boursier",
-"Etat de l&#039;enregistrement",
-"A-t-il déjà fait une colocation ?",
-"Situation",
-"Est étudiant",
-"Niveau études",
-"Longitude",
-"Latitude",
-"Status Géocode",
-"Adresse principale"];
+  "Prénom",
+  "Nom de famille",
+  "ID",
+  "Civilité",
+  "Fonction",
+  "Service",
+  "Nom du compte",
+  "Description compte",
+  "Site web",
+  "Email",
+  "Email(s) secondaire(s)",
+  "Portable",
+  "Téléphone",
+  "Ligne directe",
+  "Téléphone autre",
+  "Fax",
+  "Adresse principale - Rue 1",
+  "Adresse principale - Ville",
+  "Adresse principale - Région",
+  "Adresse principale - Code Postal",
+  "Adresse principale - Pays",
+  "Adresse secondaire - Rue 1",
+  "Adresse secondaire - Ville",
+  "Adresse secondaire - Région",
+  "Adresse secondaire - Code Postal",
+  "Adresse secondaire - Pays",
+  "Statut",
+  "Description Statut",
+  "Origine principale",
+  "Description de la principale origine du Coupon",
+  "Description",
+  "Transformé",
+  "Nom Affaire",
+  "Montant Affaire",
+  "Fait référence à",
+  "Id Campagne communication",
+  "Ne pas appeler",
+  "Nom sur le portail",
+  "Portail application",
+  "Rapporte à",
+  "Assistant",
+  "Téléphone assistant",
+  "Anniversaire",
+  "Contact (ID)",
+  "Partenaire (ID)",
+  "Affaire (ID)",
+  "Assigné à",
+  "Assigné à (ID)",
+  "Date de création",
+  "Date de modification",
+  "Créé par (ID)",
+  "Modifié par (ID)",
+  "Supprimé",
+  "Photo",
+  "Type de coupon",
+  "Changement de ville prévu dans l&#039;année scolaire ?",
+  "Diplôme préparé",
+  "L&#039;année prochaine tu serais",
+  "Pourquoi souhaites-tu faire un service civique à l&#039;Afev ?",
+  "Année scolaire",
+  "Si plus étudiant, quel niveau ?",
+  "Filière",
+  "Quelle structure ?",
+  "Si oui, details",
+  "Si plus étudiant, quelle filière ?",
+  "A-t-il déjà participé  à une action associative et solidaire ?",
+  "Est boursier",
+  "Etat de l&#039;enregistrement",
+  "A-t-il déjà fait une colocation ?",
+  "Situation",
+  "Est étudiant",
+  "Niveau études",
+  "Longitude",
+  "Latitude",
+  "Status Géocode",
+  "Adresse principale"
+];
 
 var correspondances = {
   "Civilité" : "civilite",
@@ -182,7 +183,7 @@ window.onload=function(){
   document.getElementById("download").addEventListener("click", getFullStore,false);
   document.getElementById("showCouponsList").addEventListener("click", showCouponsList,false);
   document.getElementById("deleteCoupons").addEventListener("click", deleteCoupons,false);
-
+  document.getElementById("faq").addEventListener("click", showFaq,false);
   var menuBut = document.getElementById("menu_but"),
       menu = document.getElementById("menu");
   menuBut.addEventListener("transitionend",endMenuButRotation, true);
@@ -192,24 +193,35 @@ window.onload=function(){
     menuBut.classList.remove("rotateReset");
     menuBut.classList.add("rotate");
     removeLog();
+    var faqC = document.getElementById("faqContainer");
+    if( faqC ) faqC.parentNode.removeChild( faqC );
     var menu = document.getElementById("menu"),
         menuIsInvisible = menu.classList.contains("invisible");
     if(document.getElementById("editContainer")){
       var editCont = document.getElementById("editContainer");
       editCont.parentNode.removeChild(editCont);
       var tableCont = document.getElementById("tableContainer");
+      boxTransition(tableCont);
       tableCont.classList.remove("invisible");
     }else if(document.getElementById( "tableContainer" )){
       closeTableContainer();
-      document.removeEventListener("backbutton", backKeyDown);
-    }else if(! menuIsInvisible ){
-      menu.classList.add("invisible");
-      document.getElementById( "formWraper" ).classList.remove( "invisible" );
-      e.currentTarget.querySelector("span").textContent = "m";
-      document.removeEventListener("backbutton", backKeyDown);
-    } else if( menuIsInvisible ){
       document.getElementById( "formWraper" ).classList.add( "invisible" );
       e.currentTarget.querySelector("span").textContent = "l";
+      boxTransition(menu);
+      menu.classList.remove("invisible");
+      document.addEventListener("backbutton", backKeyDown, true);
+    //  document.removeEventListener("backbutton", backKeyDown);
+    }else if(! menuIsInvisible ){
+      menu.classList.add("invisible");
+      var formWraper = document.getElementById( "formWraper" );
+      boxTransition(formWraper);
+      formWraper.classList.remove( "invisible" );
+      e.currentTarget.querySelector("span").textContent = "m";
+      document.removeEventListener("backbutton", backKeyDown);
+    }else if( menuIsInvisible ){
+      document.getElementById( "formWraper" ).classList.add( "invisible" );
+      e.currentTarget.querySelector("span").textContent = "l";
+      boxTransition(menu);
       menu.classList.remove("invisible");
       document.addEventListener("backbutton", backKeyDown, true);
     }
@@ -222,6 +234,8 @@ function backKeyDown() {
   menuBut.classList.remove("rotateReset");
   menuBut.classList.add("rotate");
   removeLog();
+  var faqC = document.getElementById("faqContainer");
+  if( faqC ) faqC.parentNode.removeChild( faqC );
   if(document.getElementById("editContainer")){
     var editCont = document.getElementById("editContainer");
     editCont.parentNode.removeChild(editCont);
@@ -237,6 +251,14 @@ function backKeyDown() {
   }
   document.removeEventListener("backbutton", backKeyDown);
 }
+var boxTransition = function(el){
+  //el.addEventListener("transitionend", endBoxTransition, true);
+  el.classList.add("minimized");
+  window.setTimeout(removeTransitionClass.bind(el), 2);
+};
+var removeTransitionClass = function(){
+  this.classList.remove("minimized");
+};
 var endMenuButRotation = function(e){
   var menuBut = document.getElementById("menu_but");
   menuBut.removeEventListener("transitionend",endMenuButRotation);
@@ -256,6 +278,18 @@ var endResetMenuButRotation = function(e){
   menuBut.addEventListener("transitionend",endMenuButRotation, true);
     menuBut.classList.remove("rotateReset");
       menuBut.classList.remove("rotate");
+};
+var showFaq = function(){
+  var mainCont = document.createElement("div"),
+      centeredCont = mainCont.appendChild( document.createElement("div") ),
+      bandBottom = centeredCont.appendChild( document.createElement("div") );
+  mainCont.id = "faqContainer";
+  centeredCont.id = "centeredCont";
+  bandBottom.id = "bandBottom";
+  document.getElementById( "formWraper" ).classList.add( "invisible" );
+  document.getElementById( "menu" ).classList.add( "invisible" );
+  document.getElementById( "mainBody" ).appendChild( mainCont );
+  boxTransition(mainCont);
 };
 var log = function(ob){
   var cont = document.createElement("div");
@@ -470,6 +504,7 @@ var couponsToTable = function(coupons){
   document.getElementById( "formWraper" ).classList.add( "invisible" );
   document.getElementById( "menu" ).classList.add( "invisible" );
   document.getElementById( "mainBody" ).appendChild( mainCont );
+  boxTransition(mainCont);
 };
 var openCoupon = function(e){
   var but = e.currentTarget,
