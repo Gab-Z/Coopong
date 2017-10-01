@@ -26,7 +26,6 @@ function saveAs (fileData,fileName) {
               style:"err"});
     });
 }
-
 var champs = [
   "Prénom",
   "Nom de famille",
@@ -105,7 +104,6 @@ var champs = [
   "Status Géocode",
   "Adresse principale"
 ];
-
 var correspondances = {
   "Civilité" : "civilite",
   "Prénom" : "prenom",
@@ -113,19 +111,16 @@ var correspondances = {
   "Email" : "email",
   "Portable" : "portable"
 }
-
 var autoFields = {
   "Statut" : "A contacter",
   "Transformé": 0,
   "Type de coupon":"Bénévole"
 };
 var excludedIdFiels = ["submit"];
-
 var request,
     db,
     objectStore,
     STR;
-
 var validityTests = [
   function(input){
     if(input.name == "civilite" && input.value == "none"){ return false;
@@ -138,7 +133,7 @@ var testValidity = function(input){
     if(validityTests[ i ](input) == false) return false;
   }
   return true;
-}
+};
 window.onload=function(){
   if (!window.indexedDB) {
     log({ txt:"Votre navigateur ne supporte pas une version stable d'IndexedDB. Cette fonctionnalité est indispensable.",
@@ -286,10 +281,65 @@ var showFaq = function(){
   mainCont.id = "faqContainer";
   centeredCont.id = "centeredCont";
   bandBottom.id = "bandBottom";
+  bandBottom.classList.add("fullW");
   document.getElementById( "formWraper" ).classList.add( "invisible" );
   document.getElementById( "menu" ).classList.add( "invisible" );
   document.getElementById( "mainBody" ).appendChild( mainCont );
   boxTransition(mainCont);
+  createFaq(bandBottom);
+};
+var createFaq = function(parent){
+  var f = faq,
+      l = faq.length;
+  for(var i = 0; i < l; i++ ){
+    var part = f[ i ],
+        partCont = parent.appendChild(document.createElement("div")),
+        partTitle = partCont.appendChild(document.createElement("div")),
+        partTitleSpan = partTitle.appendChild(document.createElement("span")),
+        paragraphs = partCont.appendChild(document.createElement("div")),
+        p = part.paragraphs,
+        pl = p.length;
+    partCont.classList.add("fullW","partCont");
+    partTitle.classList.add("faqTitle");
+    paragraphs.classList.add("fullW","paragraphs","minimized");
+    partTitleSpan.textContent = part.title;
+    for( var j = 0; j < pl; j++ ){
+      var pr = p[ j ],
+          cont = paragraphs.appendChild(document.createElement("div")),
+          txt = Array.isArray( pr.text ) ? pr.text : [ pr.text ],
+          tl = txt.length,
+          tag,
+          clas;
+      cont.classList.add("fullW");
+      if(pr.style == "paragraph"){
+        tag = "p";
+        clas = "paragraph"
+      }else if(pr.style == "subTitle"){
+        tag = "p";
+        clas= "subTitle"
+      }else if(pr.style == "list1"){
+        tag = "li";
+        clas= "list1"
+        var subCont = cont.appendChild(document.createElement("ul"));
+        cont = subCont;
+      }else if(pr.style == "list2"){
+        tag = "li";
+        clas= "list2"
+        var subCont = cont.appendChild(document.createElement("ul"));
+        cont = subCont;
+      };
+      for( var t = 0; t < tl; t++ ){
+        var tx = txt[ t ],
+            el = cont.appendChild(document.createElement(tag));
+        el.classList.add(clas);
+        el.textContent = tx;
+      };
+    }
+    partCont.addEventListener("click",faqTransition,false)
+  }
+};
+var faqTransition = function(e){
+  e.currentTarget.querySelector(".paragraphs").classList.toggle("minimized")
 };
 var log = function(ob){
   var cont = document.createElement("div");
@@ -329,7 +379,6 @@ var removeLog = function(){
   var cont = document.getElementById("log");
   cont.parentNode.removeChild(cont);
 }
-
 var createDbIndexes = function(obStore){
   obStore.createIndex("civilite", "civilite", { unique: false });
   obStore.createIndex("prenom", "prenom", { unique: false });
@@ -367,7 +416,6 @@ var submitForm = function(e){
     log({txt:"Coupon enregistré avec succès",ico:"k",style:"success"})
   };
 };
-
 var clearForm = function(){
   clearInput("Mme");
   clearInput("M.");
@@ -387,7 +435,6 @@ var clearInput = function(id){
     el.checked = false;
   }
 };
-
 var getAllCoupons = function(callback, callback2){
   var cbk2 = callback2 || false;
   var objectStore = db.transaction("coupons").objectStore("coupons");
@@ -703,8 +750,8 @@ var closeTableContainer = function(e){
   }
 };
 var deleteCoupons = function(){
-  //getFullStore(clearDb);
-  clearDb();
+  var resultat = window.confirm("Êtes vous sûr de vouloir effacer les coupons ? (une sauvegarde sera effectuée. Le fichier sera placé à la racine de la mémoire interne.)");
+  if( resultat )getFullStore(clearDb);
 };
 var clearDb = function(){
   var transaction = db.transaction("coupons", "readwrite");
