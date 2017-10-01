@@ -378,7 +378,7 @@ body *.invisible{
   font-size: 2em;
 }
 #faqContainer .partCont{
-  width:100%;
+  max-width:100vw;
   border-bottom:4px solid white;
   background-color:#d2d2d4;
   margin:0;
@@ -386,16 +386,16 @@ body *.invisible{
   overflow-wrap: break-word;
   text-align: justify;
 }
-.partCont ul{
-  max-width:95%;
+#faqContainer .partCont *{
+  max-width:95vw;
 }
 .partCont li{
   max-width:80%;
 }
-.partCont p{
-  max-width:95%;
+.faqTitle p{
+  margin-top:0;
+  margin-bottom:0;
 }
-
 
 
 .faqTitle,
@@ -404,15 +404,14 @@ body *.invisible{
   max-width:100%;
   height:auto;
   display:block;
-  padding-left:5px;
-  padding-right:5px;
+  padding-left:10px;
+  padding-right:10px;
 }
 .faqTitle{
     background-color: #2a2626;
     color:#e7e5e4;
-    text-decoration: underline #e7e5e4;
-    padding-top:15px;
-    padding-bottom:15px;
+    padding-top:12px;
+    padding-bottom:12px;
     font-weight: 800;
 }
 .subTitle{
@@ -422,13 +421,13 @@ body *.invisible{
 .partCont .paragraphs{
   -webkit-transition: max-height .3s;
   transition: max-height .3s;
-  max-height:100%;
+  max-height:4000px;
   overflow: hidden;
 }
 .partCont .minimized{
   -webkit-transition: max-height .3s;
   transition: max-height .3s;
-  max-height:0;
+  max-height:0px;
 }
 
 

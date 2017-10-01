@@ -3,10 +3,12 @@ var faq  = [
     title: "Qu'est-ce que Coopong ?",
     paragraphs:[
       { style:"paragraph",
-        text:"Une application pour Android (tablettes et smartphones) qui va vous permettre de saisir facilement des coupons sur comet sans avoir besoin d'une connexion internet."
+        text:"Une application pour Android (tablettes et smartphones) qui va vous permettre de saisir facilement des coupons sur la comet sans avoir besoin d'une connexion internet."
       },
       { style:"paragraph",
-        text:"Coopong offre un formulaire de saisie de coupons pour la mob. Les coupons sont enregistrés dans la mémoire interne de l'appareil. En fin de mob vous pouvez télécharger un fichier contenant tous les coupons enregistrés, le transférer vers un ordinateur connecté à internet puis le charger dans la comet en quelques clics."
+        text:[  "Coopong offre un formulaire de saisie de coupons pour la mob. Les coupons sont enregistrés dans la mémoire interne de l'appareil. En fin de mob vous pouvez télécharger un fichier contenant tous les coupons enregistrés.",
+                "Vous pouvez ensuite transférer ce fichier vers un ordinateur connecté à internet puis le charger dans la comet en quelques clics."
+        ]
       }
     ]
   },
@@ -30,7 +32,7 @@ var faq  = [
   },
 
   {
-    title: "Enregistrer les coupons (dans la mémoire interne)",
+    title: "Enregistrer les coupons dans la mémoire interne",
     paragraphs:[
       { style:"list1",
         text:[  "Ouvrez le menu, cliquez sur \"Enregistrer les coupons au format csv\", une fenêtre de confirmation devrait apparaître.",
@@ -64,7 +66,7 @@ var faq  = [
     title: "Effacer les coupons en mémoire.",
     paragraphs:[
       { style:"list1",
-        text:[  "Ouvrez le menu, cliquez sur \"Supprimer les coupons, vider la mémoire\", une fenêtre de vérification devrait apparaître, validez la si vous êtes sûr de vuloir effacer",
+        text:[  "Ouvrez le menu, cliquez sur \"Supprimer les coupons, vider la mémoire\", une fenêtre de vérification devrait apparaître, validez la si vous êtes sûr de vouloir effacer les coupons en mémoire",
                 "Un fichier de sauvegarde sera automatoquement crée",
                 "Une notification devrait vous confirmer que la mémoire a bien été effacée."
         ]
@@ -78,8 +80,8 @@ var faq  = [
       { style:"paragraph",
         text:[
               "Il est possible de modifier les coupons présents dans la mémoire de l'appareil.",
-              "Depuis le menu, cliquez sur \"Afficher les coupons\" puis sur l'icône représentant un crayon du coupon que vous voulez modifier.",
-              "Un forulaire s'ouvrira qui vous permettra de changer les informations du coupon. Cliquez sur \"Envoyer\" pour enregistrer"
+              "Depuis le menu, cliquez sur \"Afficher les coupons\", choisissez un coupon, puis cliquez sur l'icône représentant un crayon à droite.",
+              "Un formulaire s'ouvrira qui vous permettra de changer les informations du coupon. Cliquez sur \"Envoyer\" pour enregistrer vos modifications."
             ]
       }
     ]
@@ -90,12 +92,11 @@ var faq  = [
       { style:"paragraph",
         text:[
           "Depuis la comet, passez votre curseur au niveau du menu (barre noire en haut) sur \" ACTIVITES DU POLE\" et cliquez sur \"coupons\".",
-          "Laissez se charger la nouvelle page, puis à nouveau sur le menu passez votre souris sur \"Coupons\" et cliquez sur \"Import coupons\".",
+          "Laissez se charger la nouvelle page, puis à nouveau passez votre souris sur le menu  au niveau de \"Coupons\" et cliquez sur \"Import coupons\".",
           "Sur la nouvelle page cliquez sur \"parcourir\" et sélectionnez votre fichier de coupons. Cliquez ensuite sur \"Suivant\".",
           "Cliquez sur \"Suivant\" ou \"Envoyer\" pour toutes les pages qui s'affichent jusqu'à ce que vos coupons soient enregistrés. Attention, les boutons sont parfois tout en bas de page, cherchez bien.",
           "Vous n'avez normalement pas à vous soucier des options d'enregistrement de la comet, les paramètres par défaut fonctionnent bien."
         ]
-
       },
     ]
   }
